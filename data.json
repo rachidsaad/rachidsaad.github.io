@@ -1,31 +1,31 @@
 {
 	"data":[
 		{
-			"ulID":"pol", "link":"http://www.hespress.com/feed/politique/index.1.rss"
+			"ulID":"pol", "link":"https://www.hespress.com/feed/politique/index.1.rss"
 		},
 		{
-			"ulID":"soc", "link":"http://www.hespress.com/feed/societe/index.1.rss"
+			"ulID":"soc", "link":"https://www.hespress.com/feed/societe/index.1.rss"
 		},
 		{
-			"ulID":"eco", "link":"http://www.hespress.com/feed/economie/index.1.rss"
+			"ulID":"eco", "link":"https://www.hespress.com/feed/economie/index.1.rss"
 		},
 		{
-			"ulID":"diaspo", "link":"http://www.hespress.com/feed/marocains-du-monde/index.1.rss"
+			"ulID":"diaspo", "link":"https://www.hespress.com/feed/marocains-du-monde/index.1.rss"
 		},
 		{
-			"ulID":"medias", "link":"http://www.hespress.com/feed/medias/index.1.rss"
+			"ulID":"medias", "link":"https://www.hespress.com/feed/medias/index.1.rss"
 		},
 		{
-			"ulID":"acc", "link":"http://www.hespress.com/feed/faits-divers/index.1.rss"
+			"ulID":"acc", "link":"https://www.hespress.com/feed/faits-divers/index.1.rss"
 		},
 		{
-			"ulID":"cult", "link":"http://www.hespress.com/feed/art-et-culture/index.1.rss"
+			"ulID":"cult", "link":"https://www.hespress.com/feed/art-et-culture/index.1.rss"
 		},
 		{
-			"ulID":"orb", "link":"http://www.hespress.com/feed/orbites/index.1.rss"
+			"ulID":"orb", "link":"https://www.hespress.com/feed/orbites/index.1.rss"
 		},
 		{
-			"ulID":"sport", "link":"http://www.hespress.com/feed/sport/index.1.rss"
+			"ulID":"sport", "link":"https://www.hespress.com/feed/sport/index.1.rss"
 		}
 	]
 }
