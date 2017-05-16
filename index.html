@@ -3,10 +3,10 @@
 <head>
 	<meta charset="UTF-8">
 	<title>test</title>
-	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="style/style.css">
 	<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=El+Messiri" rel="stylesheet">
-	<script src="main.js"></script>
+	<script src="js/main.js"></script>
 	
 </head>
 <body>
@@ -59,7 +59,7 @@
 			var VidDiv = '#vid';
 			getVids(vid, VidDiv);
 			
-			$.getJSON('data.json', function(results){
+			$.getJSON('data/data.json', function(results){
 				$.each(results.data, function(i, row){
 					getNews(row['link'], row['ulID']);
 				});
