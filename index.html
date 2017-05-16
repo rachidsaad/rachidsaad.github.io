@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ar" xml:lang="ar" dir="rtl">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=El+Messiri" rel="stylesheet">
+	<script src="main.js"></script>
+	
+</head>
+<body>
+	<div id="wrap">
+		<nav>
+			<ul id="menu">
+				<li><a href="#">home</a></li>
+				<li><a href="#">سياسة</a></li>
+				<li><a href="#">جهات</a></li>
+				<li><a href="#">مجتمع</a></li>
+				<li><a href="#">مال وأعمال</a></li>
+				<li><a href="#">مغاربة العالم</a></li>
+				<li><a href="#">السلطة الرابعة</a></li>
+				<li><a href="#">حوادث</a></li>
+				<li><a href="#">فن وثقافة</a></li>
+				<li><a href="#">مدارات</a></li>
+				<li><a href="#">رياضة</a></li>
+				<li><a href="#">صوت وصورة</a></li>
+			</ul>
+		</nav>
+		<div id="last-news">
+			<ul id="items" class="news"></ul>
+			<div id="slider-nav">
+				<button data-dir="prev">&lt;</button>
+				<ul id="pagina"></ul>
+				<button data-dir="next">&gt;</button>
+			</div>
+		</div>
+		<div>
+			<ul id="vid"></ul>
+		</div>
+
+		<div id="news-catg">
+			
+		</div>
+		
+	</div>
+	<script>
+		$(document).ready(function(){
+			// $('body').load('http://www.hespress.com/medias/350350.html #article_body');
+			var last 	= 'http://www.hespress.com/feed/index.',
+				ulID	= '#items',
+				pagList = '#pagina',
+				nav 	= '#slider-nav';
+
+			getLastNewsMin(last, ulID);
+				
+
+			var vid = 'http://www.hespress.com/feed/videos/index.1.rss';
+			var VidDiv = '#vid';
+			getVids(vid, VidDiv);
+			
+			$.getJSON('data.json', function(results){
+				$.each(results.data, function(i, row){
+					getNews(row['link'], row['ulID']);
+				});
+			});
+		});
+	</script>
+</body>
+</html>
