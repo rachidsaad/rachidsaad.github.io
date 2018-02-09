@@ -1,0 +1,60 @@
+@font-face {
+	font-family: 'Play';
+	font-style: normal;
+	font-weight: 400;
+	src: url('fonts/Play.ttf') format('truetype');
+}
+*{
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	outline: none;
+	list-style-type: none;
+	font-weight: normal;
+	font-size: 1em;
+	font-style: normal;
+	outline: none;
+}
+body,html,textarea{
+	font-size: 100%;
+	font-family: 'play', Calibri, Arial, sans-serif;
+	background: #E7ECF0;
+}
+::-moz-selection {
+    background: #F9FF00;
+    text-shadow: none;
+    color: #000;
+}
+::selection {
+    background: #F9FF00;
+    text-shadow: none;
+    color: #000;
+}
+
+#pnf{
+	margin: 20px auto;
+	color: #616161;
+	text-align: center;
+	width: 320px;
+	font-variant: small-caps;
+}
+#pnf h1{
+	font-size: 2.25em;
+}
+#pnf h3{
+	font-size: 1.5em;
+	line-height: .6em;
+}
+#pnf a{
+	font-size: 1.5em;
+	color: #75b4fb;
+	position: relative;
+	-webkit-transition: border-bottom .3s, color .3s;
+	-o-transition: border-bottom .3s, color .3s;
+	transition: border-bottom .3s, color .3s;
+}
+#pnf img{
+	margin: 10px auto 0px;
+	display: block;
+	width: 300px; height: 196px;
+}
