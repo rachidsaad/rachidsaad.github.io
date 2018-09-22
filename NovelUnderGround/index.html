@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Reddit</title>
+	<link rel="stylesheet" href="style.css">
+	<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+	<script src="http://bitwiseshiftleft.github.io/sjcl/sjcl.js"></script>	
+
+</head>
+<body>
+	
+	<div id="wrap">
+		<div class="switsh">
+			<ul>
+				<li class='icones icon-night'></li>
+				<li class='icones icon-light'></li>
+				<li class='icones icon-up' id='top'></li>
+			</ul>
+		</div>
+		<header>
+			<a href="#"><img src="q.png" alt=""><h1>UndeRGrounD</h1></a>
+			<div id="confiozesearsh">
+				<p class="icones icon-search" id="showsearch"></p>
+				<div id="search">
+					<input type="text" placeholder="Novel Name" id='textfield'>
+					<p class="icones icon-search" id="reddit_search"></p>
+				</div>
+			</div>
+		</header>
+		<div id="main">
+			<div id="search_results" class="updates">
+				<ul>
+					<li>
+						<h1>
+						Search results
+						<img id="spin" src="imgs/spin.gif" alt="">
+						</h1>
+					</li>
+				</ul>
+			</div>
+
+			<div id="novelsearsh" class="updates">
+				<ul>
+					<li>
+						<h1></h1>
+						<img id="spin" src="imgs/spin.gif" alt="">
+						<span class='icones icon-cancel'></span>
+						<span class='globoscorescore'>Novel Score:</span>
+					</li>
+				</ul>
+			</div>
+
+			<div id="updates" class="updates">
+				<ul>
+					<li>
+						<h1>
+							<span class='icones icon-refresh' data-action='ReFresh'>
+							</span>Latest Updates:
+						</h1>
+						<img id="spin" src="imgs/spin.gif" alt="">
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div id="side">
+			<div id="novellist" class="updates">
+				<ul>
+					<li><h1>Novel list:</h1></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<script src="main.js"></script>
+	<script>
+		$(document).ready(function(){
+			var link  = 'https://www.reddit.com/r/QidianUnderground/new.json?',
+				limit = 30;
+			getData(link,limit,'updates');
+			
+			novelList(link,'60','novellist');
+
+			$('.icon-refresh').on('click', function(){
+				var divID = $(this).parents('.updates').attr('id');
+				$('img#spin').show();
+				$('#'+divID+ ' ul li:gt(0)').remove()
+				getData(link, limit, divID);							
+			});
+
+			$('#showsearch').on('click', function(){
+				$('#search').fadeToggle();
+				$(this).toggleClass('icon-cancel');
+
+				$('#updates').show();
+				$('#search_results').hide();
+				$('#search_results ul li:gt(0)').remove();
+				$('#textfield').focus();
+				$('#textfield').val('').css('background','');
+				
+			});
+
+			$('#reddit_search').on('click', function(){
+				var textfield    = $('#textfield'),
+					textfieldVal = $(textfield).val().trim();
+
+					if(textfieldVal && !$.isNumeric(textfieldVal)){
+						textfield.css('background','');
+						$('#updates').hide();
+						$('#search_results').fadeIn();
+						$('#search_results ul li:gt(0)').remove();
+						$('#search_results h1 img').show();
+						getLatest(textfieldVal, 30,'search_results');
+					}else{
+						textfield.css('background','#F44336');
+						textfield.val('').focus();
+
+					}
+			});
+
+			$('.switsh ul li').on('click', function(){
+				if($(this).hasClass('icon-night')){
+					$('header a').addClass('noafter');
+					$('body, header a, .switsh, .updates, p.icon-search, #search input[type="text"], .icon-search.night, .icon-cancel.night').addClass('night');
+					$("header img").attr("src","qb.png");
+					
+
+				}else if($(this).hasClass('icon-light')){
+					$('header a').removeClass('noafter');
+					$('body, header a, .switsh, .updates, p.icon-search, #search input[type="text"], .icon-search.night, .icon-cancel.night').removeClass('night');
+					$("header img").attr("src","q.png");
+				}else if($(this).hasClass('icon-up')){
+					$('body,html').animate({scrollTop:0},500);
+				}
+
+			});
+
+			$(window).on('scroll',function(){
+				$(window).scrollTop()>=400?$('#top').show():$('#top').hide();
+			});
+		});
+	</script>
+</body>
+</html>
