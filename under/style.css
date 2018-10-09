@@ -1,0 +1,550 @@
+/*Font family <start>*/
+
+@font-face {
+  font-family: 'link';
+  src: url('font/link.eot?80985889');
+  src: url('font/link.eot?80985889#iefix') format('embedded-opentype'),
+       url('font/link.woff2?80985889') format('woff2'),
+       url('font/link.woff?80985889') format('woff'),
+       url('font/link.ttf?80985889') format('truetype'),
+       url('font/link.svg?80985889#link') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*Font family < end >*/
+
+/* rev_Default <start> */
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  list-style-type: none;
+}
+*,*:after,*:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+html {
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+a{
+  text-decoration: none;
+  color: #000;
+}
+a:focus {
+  outline: thin dotted #333;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+a:hover,
+a:active {
+  outline: 0;
+}
+h1, h2, h3{
+  font-weight: normal;
+}
+button,
+input,
+select,
+textarea {
+  margin: 0;
+  font-size: 100%;
+  vertical-align: middle;
+}
+button,
+input {
+  *overflow: visible;
+  line-height: normal;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+input::placeholder{
+  color: #000;
+  opacity: .2;
+}
+/* rev_Default < end >*/
+
+/* Icones <start>*/
+.icones:before{font-family: "link";}
+
+.icon-book:before { content: '\e800'; }
+.icon-reddit:before { content: '\e801'; }
+.icon-search:before { content: '\e802'; }
+.icon-up:before { content: '\e803'; }
+.icon-book-open:before { content: '\e804'; }
+.icon-more:before { content: '\e805'; }
+.icon-light:before { content: '\e806'; }
+.icon-night:before { content: '\e807'; }
+.icon-fire:before { content: '\e809'; }
+.icon-th:before { content: '\e80a'; }
+.icon-refresh:before { content: '\e80b'; }
+.icon-cancel:before { content: '\e80d'; }
+.icon-link:before { content: '\f08e'; }
+.icon-commento:before { content: '\f0e6'; }
+.icon-doc:before { content: '\f15c'; }
+.icon-thermo:before { content: '\f2c7'; }
+
+.icon-link:before {
+  margin-right: 5px;
+  font-weight: bold;
+}
+.icon-fire:before,.icon-commento:before,.icon-thermo:before {
+  margin-right: 5px;
+  font-size: .9em;
+}
+.icon-refresh:before { 
+  content: '\e80b';
+  margin-right: 5px;
+  color: #FFEB3B;
+}
+.icon-search{
+  float: right;
+}
+span.icon-refresh[data-action]:after{
+  z-index: -20;
+  opacity: 0;
+  content: attr(data-action);
+  position: absolute;
+  color: #525252;
+  font-size: 0.6em;
+  font-weight: bold;
+  background: #fbfcfe;
+  padding: 5px 3px;
+  border: 1px solid #c5c5c5;
+  border-radius: 2px;
+  transition: opacity .3s;
+}
+span.icon-refresh[data-action]:hover:after{
+  z-index: 20;
+  opacity: 1;
+}
+.icon-refresh:hover:before{
+  opacity: 1;
+}
+span.icones.icon-cancel {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: #feec4e;
+}
+#reader span.icon-cancel{
+  position: fixed;
+  top: 15px;
+  right: 48px;
+}
+.icon-light{
+  display: none;
+}
+/* Icones < end >*/
+
+/*Gnr style <start>*/
+body{
+  background: #f5f6fc;
+  font-family: sans-serif,helvetica;
+}
+#wrap{
+  margin: auto 50px;
+  overflow: hidden;
+}
+#main{
+  margin: auto;
+  overflow: hidden;
+}
+#side{
+  display: inline-block;
+  width: 450px;
+  display: none;
+}
+
+/*Nest <start>*/
+header a{
+  background: #fff;
+}
+header a{
+  border: 1px solid #000;
+}
+#search_results, #novelsearsh{
+  display: none;
+}
+.updates li:first-child, #updates li:first-child {
+  background: #2d2d2d;
+  color: #fff;
+  height: auto;
+  border-top: 1px solid #646464;
+}
+#search_results li, #novelsearsh li{
+  height: 70px;
+}
+#search_results li:first-child,
+#search_results li:nth-child(2),
+#novelsearsh li:first-child,
+#novelsearsh li:nth-child(2){
+  height: auto;
+}
+#updates li:nth-child(2n),
+#novelsearsh li:nth-child(2n),
+#search_results li:nth-child(2n),
+#novellist li:nth-child(4n+2),
+#novellist li:nth-child(4n-1){
+  background: #fff;
+}
+.icones, #updates h2{
+  cursor: pointer;
+}
+/*Nest < end >*/
+
+.switsh {
+  position: fixed;
+  bottom: 0;
+  z-index: 2;
+  background: #2d2d2d;
+  width: 100%;
+  padding: 5px;
+  height: 40px;
+  overflow: hidden;
+}
+.switsh ul {
+    line-height: 20px;
+}
+.switsh li, #reader span.icon-cancel{
+  padding: 5px;
+  text-align: center;
+  color: #fff;
+  display: inline-block;
+}
+input#textfield {
+  padding-left: 5px;
+  font-weight: bold;
+  text-transform: capitalize;
+  padding-top: 1px;
+}
+span#search{
+  float: right;
+  display: none;
+}
+li.icon-light{
+  display: none;
+}
+#top{
+  display: none;
+}
+header{
+  margin: 50px auto;
+  height: 60px;
+  overflow: hidden;
+  display: flex;
+}
+header a{
+  height: 100%;
+  float: left;
+  margin-right: 10px;
+}
+header h1 {
+  float: left;
+  font-size: 1.6em;
+  letter-spacing: -1px;
+  display: inline;
+  padding: 16px 16px 16px 12px;
+  text-transform: lowercase;
+  font-weight: bold;
+}
+header a img {
+  width: 59px;
+  float: left;
+  filter: grayscale(100%);
+  border-right: 1px solid #848484;
+}
+header p{
+  background: #fff;
+  display: inline-block;
+  height: 60px;
+  padding: 0 15px;
+  line-height: 60px;
+  font-size: 1.1em;
+  border: 1px dashed #2d2d2d;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  flex: 1;
+}
+div#confiozesearsh {
+  float: right;
+  height: 100%;
+}
+header input[type="text"] {
+  height: 100%;
+  margin-right: 10px;
+  padding: 15px;
+  float: left;
+  font-size: 1.5em;
+}
+#updates li{
+  height: 94px;
+}
+.updates {
+  border-right: 1px solid #646464;
+  border-left: 1px solid #646464;
+  margin-bottom: 50px;
+}
+.updates li {
+  padding: 10px;
+  border-bottom: 1px solid #646464;
+  overflow: hidden;
+  position: relative;
+}
+.updates h1 {
+  word-spacing: -3px;
+  font-size: 1.5em;
+  padding: 5px 0px;
+  text-transform: capitalize;
+  display: inline-block;
+}
+.updates h2{
+  text-transform: capitalize;
+  font-size: 1.3em;
+  display: inline-block;
+}
+#novellist h5{
+  text-transform: capitalize;
+  padding: 6px 0px;
+}
+#novellist ul li{
+  height: 47px;
+}
+#novellist ul li:first-child{
+  height: auto;
+  cursor: initial;
+}
+#novelsearsh ul li:first-child a{
+  color:#fff;
+}
+.updates a h3 {
+  margin: 5px 0px;
+  display: inline-block;
+  letter-spacing: 1px;
+  font-size: 1.1em;
+}
+.updates ul li img{
+  width: 45px;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+}
+.spinner img#spin{
+  width: 16px;
+  top: 10px;
+  right: 60px;
+}
+.updates a{
+  margin-right: 10px;
+  transition: color .2s;
+  display: table;
+}
+li.bestmatch a {
+  display: table;
+  margin-right: 0;
+  margin-left: 10px;
+  padding: 3px 0px;
+}
+/*li.bestmatch a:before{
+  content: ''
+}*/
+.updates a span.icones {
+    padding-right: 10px;
+}
+span.numbers {
+  /*float: right;
+  font-size: 3.9em;
+  font-weight: bold;
+  opacity: 0.1;
+  transform: scale(2.2);
+  letter-spacing: -10px;*/
+  opacity: 0.1;
+  font-weight: bold;
+  letter-spacing: -1px;
+  position: absolute;
+  right: 15px;
+  bottom: 25px;
+  transform: scale(2.5);
+}
+p#date {
+  font-size: 0.6em;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  padding: 2px 4px;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-top: 1px solid #000;
+  border-left: 1px solid #000;
+}
+span.bookups, span.read {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  opacity: 0.2;
+  /*display: none;*/
+  /*color: #2196F3;*/
+}
+span.read{
+  right: 35px;
+}
+#novelsearsh span.read, #search_results span.read{
+  right: 10px;
+}
+#novelsearsh .spinner img#spin, #search_results .spinner img#spin{
+  right: 35px;
+}
+span.globoscorescore {
+    color: #2196F3;
+    font-weight: bold;
+}
+#novelsearsh ul li img{
+  right: 20px;
+}
+#reader{
+  position: absolute;
+  top: 0; left: 0;
+  background: #f5f6fc;
+  z-index: 3;
+  width: 100%;
+  display: none;
+}
+.text{
+  width: 1000px;
+  margin: auto;
+  padding: 50px 25px;
+  background: #fff;
+  text-align: justify;
+  font-size: 1.2em;
+  line-height: 1.5em;
+  overflow: hidden;
+}
+#reader p{
+  padding: 10px;
+}
+#novelinfo{
+  display: none;
+}
+#novelinfo ul li:nth-child(2){
+  background: #fff;
+}
+#novelinfo ul li p {
+  padding: 5px;
+  text-align: justify;
+  line-height: 1.3em;
+}
+span.noveldata {
+  float: left;
+  padding: 5px;
+}
+span.synop {
+  clear: both;
+  display: block;
+}
+#novelinfo ul li img {
+  position: initial;
+  width: 160px;
+  border: 1px solid #000;
+  outline: 1px solid #f5f6fc;
+  outline-offset: -8px;
+  float: right;
+  margin: 5px;
+}
+/*Gnr style < end >*/
+
+/*Hover <start>*/
+.updates li:hover a h3{
+  color: #2196F3;
+}
+.updates li:hover #date{
+  background: #2196F3;
+  color: #fff;
+  border-color: #2196F3;
+}
+.updates li:hover span.bookups, .updates li:hover span.read{
+  opacity: 1;
+  color: #2196F3;
+}
+.updates a:hover{
+  color: #2196F3;
+}
+.updates li:hover .numbers{
+  color: #2196F3;
+  opacity: 1;
+}
+
+#novelsearsh li:nth-child(2){
+  height: 47px;
+  line-height: 47px;
+  padding: 0 10px;
+}
+/*Hover < end >*/
+
+/*night mode <start>*/
+body.night,
+header a.night,
+.switsh.night ul li,
+.icon-search.night,
+.icon-cancel.night,
+#search input[type="text"].night,
+#updates.updates.night li,
+#novelsearsh.updates.night li,
+#search_results.updates.night li,
+#novellist.updates.night li,
+#reader.night,
+.text.night,
+#reader span.icon-cancel.night{
+  color: #fff;
+  background: #000;
+}
+header a.night,
+.switsh.night ul li,
+.icon-search.night,
+/*icon cancel @menu has class search*/
+#search input[type="text"].night,
+#reader span.icon-cancel{
+  border: 1px solid #848484;
+}
+.updates.night a{
+  color: #fff;
+}
+.night input::placeholder{
+  color: #fff;
+}
+/*hover night mode >*/
+.updates.night a:hover{
+  color: #2196F3;
+}
+span.numbers.night{
+  opacity: 0.5;
+}
+/* </ hover night mode*/
+
+/*.night li, .night p, .night input[type="text"]{
+  background: #000;
+}
+.night ul li {
+  border-bottom: 1px solid #848484;
+  text-shadow: none;
+}
+.night input[type="text"]{
+  border: 1px solid #848484;
+}
+.updates.night li:first-child {
+  border-top: 1px solid #848484;
+}*/
+/*night mode <end>*/
