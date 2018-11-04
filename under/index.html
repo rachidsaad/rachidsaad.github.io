@@ -3,25 +3,31 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Reddit</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="style.css">
 	<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-	<script src="https://paste.imirhil.fr/js/sjcl-1.0.4.js"></script>
+	<script src="https://paste.fizi.ca/js/sjcl-1.0.7.js"></script>
+	<script src="https://paste.fizi.ca/js/base64-2.4.5.js"></script>
+	<script src="https://paste.fizi.ca/js/rawdeflate-0.5.js"></script>
+	<script src="https://paste.fizi.ca/js/rawinflate-0.3.js"></script>
+	
+	<!-- <script src="https://paste.imirhil.fr/js/sjcl-1.0.4.js"></script>
 	<script src="https://paste.imirhil.fr/js/base64-2.1.9.js"></script>
 	<script src="https://paste.imirhil.fr/js/rawdeflate-0.5.js"></script>
-	<script src="https://paste.imirhil.fr/js/rawinflate-0.3.js"></script>
+	<script src="https://paste.imirhil.fr/js/rawinflate-0.3.js"></script> -->
 
 </head>
 <body>
-	<span class="icones icon-cancel"></span>
-	<div class="switsh">
+	<span id='showBar' class="icones  icon-plus-square"></span>
+	<div id="switsh">
 		<ul>
-			<li class='icones icon-night'></li>
-			<li class='icones icon-light'></li>
-			<li class='icones icon-up' id='top'></li>
-			<li class='icones icon-search' id='showsearch'></li>
+			<li class='icones icon-moon'></li>
+			<li class='icones icon-sun'></li>
+			<li class='icones icon-chevron-thin-up' id='top'></li>
+			<li class='icones icon-search2' id='showsearch'></li>
 			<span id='search'>
 				<li><input type="text" placeholder="Novel Name" id='textfield'></li>
-				<li class="icones icon-search" id="reddit_search"></li>
+				<li class="icones icon-search2" id="reddit_search"></li>
 			</span>
 		</ul>
 	</div>
@@ -29,43 +35,26 @@
 	<div id="wrap">
 
 		<header>
-			<a href="index.html"><img src="img/qw.png" alt=""><h1>UndeRGrounD</h1></a>
+			<a href="index.html"><img src="img/lmp.png" alt=""><h1>UndeRGrounD</h1></a>
 			<p>A greedy father has thieves for children.</p>
-			<!-- <div id="confiozesearsh">
-				<span id="search">
-					<input type="text" placeholder="Novel Name" id='textfield'>
-					<p class="icones icon-search" id="reddit_search"></p>
-				</span>
-				<p class="icones icon-search" id="showsearch"></p>
-			</div> -->
 		</header>
-
-		<div id="search_results" class="updates">
-			<ul>
-				<li>
-					<h1>Search results:</h1>
-					<img id="spin" src="imgs/spin.gif" alt="">
-				</li>
-			</ul>
-		</div>
 
 		<div id="main">
 
-			<div id="novelsearsh" class="updates">
+			<div id="search_results" class="updates">
 				<ul>
 					<li>
+						<h1>Search results:</h1>
 						<img id="spin" src="imgs/spin.gif" alt="">
-						<span class='icones icon-cancel'></span>
+						<span class='icones icon-close'></span>
 					</li>
-					<li></li>
 				</ul>
 			</div>
 
 			<div id="novelinfo" class="updates">
 				<ul>
 					<li>
-						<h1></h1>
-						<span class='icones icon-cancel'></span>
+						<span class='icones icon-close'></span>
 					</li>
 				</ul>
 			</div>
@@ -74,10 +63,9 @@
 				<ul>
 					<li>
 						<h1>
-							<span class='icones icon-refresh' data-action='ReFresh'>
+							<span class='icones icon-rotate-cw' data-action='ReFresh'>
 							</span>Latest Updates:
 						</h1>
-						<img id="spin" src="imgs/spin.gif" alt="">
 					</li>
 				</ul>
 			</div>
@@ -95,7 +83,7 @@
 
 	<div id="reader">
 
-		<span class="icones icon-cancel"></span>
+		<!-- <span class="icones icon-close"></span> -->
 		<div class="text"></div>
 
 	</div>
@@ -103,65 +91,107 @@
 	<script src="main.js"></script>
 	<script>
 		$(document).ready(function(){
-			var link  = 'https://www.reddit.com/r/QidianUnderground/new.json?',
-				limit = 30;
-			getData(link,limit,'updates');
-			
-			// novelList(link,'60','novellist');
+			var updates = 'updates';
+			var url  = 'https://www.reddit.com/r/QidianUnderground/new.json?',
+				limit = 10;
 
-			$('.icon-refresh').on('click', function(){
-				var divID = $(this).parents('.updates').attr('id');
+			getData('',url,limit,updates);
+			
+			$('.icon-rotate-cw').on('click', function(){
 				$('img#spin').show();
-				$('#'+divID+ ' ul li:gt(0)').remove()
-				getData(link, limit, divID);							
+				$('#'+updates+ ' ul li:gt(0)').remove()
+				getData('',url,limit,updates);							
 			});
+
+			$('#novelinfo .icon-close, #search_results .icon-close').on('click',function(){
+
+				toHide    = $(this).parents('.updates').attr('id');
+				ittSearch = window.novelInfoittSearch;
+
+				if(toHide == 'search_results'){
+					divToShow = localStorage.getItem('divTohide');
+					$('#'+toHide+' ul li:gt(0)').remove();
+					$('#'+toHide).hide();
+					$('#'+divToShow).show();
+					$('#showsearch ,#search').show();
+				}else if(toHide == 'novelinfo' && ittSearch){
+					$('#'+toHide+' ul li:eq(0) h1').remove();
+					$('#'+toHide+' ul li:gt(0)').remove();
+					window.novelInfoittSearch = false;
+					$('#search_results').show();
+					$('#'+toHide).hide();
+				}
+				else{
+					scroll = localStorage.getItem("scroll");				
+					$('#'+toHide+' ul li:eq(0) h1').remove();
+					$('#'+toHide+' ul li:gt(0)').remove();
+					$('#'+updates).show();
+					$('#'+toHide).hide();
+					$('body,html').animate({scrollTop:scroll},300);
+				}
+
+			});
+			// novelList(link,'60','novellist');
 
 			$('#showsearch').on('click', function(){
 				$('#search').toggle();
-				$(this).toggleClass('icon-cancel');
-				$('#textfield').val('').css('background','');
+				$(this).toggleClass('icon-close');
+				$('#textfield').val('').css('border-bottom-color','');
 				$('#textfield').focus();
-
-				$('#main').show();
-				$('#search_results').hide();
-				$('#search_results ul li:gt(0)').remove();
 			});
-
 			$('#reddit_search').on('click', function(){
 				var textfield    = $('#textfield'),
-					textfieldVal = $(textfield).val().trim();
+					textfieldVal = $(textfield).val().replace(/[^\w'’\s]/gi, '').trim();
 
-					if(textfieldVal && !$.isNumeric(textfieldVal)){
-						textfield.css('background','');
-										
-						$('#main').hide();
-						$('#search_results').show();
-						$('#search_results ul li:gt(0)').remove();
-						$('#search_results li:eq(0) img').show();
-						getLatest(textfieldVal, 30,'search_results');
-					}else{
-						textfield.css('background','#F44336');
-						textfield.val('').focus();
+				if(textfieldVal && textfieldVal.length>2 && !$.isNumeric(textfieldVal)){
+					textfield.css('border-bottom-color','initial');
+
+					divTohide = $('.updates:visible:eq(0)').attr('id');
+
+					$('#'+divTohide).hide();
+					$('#search_results ul li:gt(0)').remove();
+					$('#search_results, #search_results li:eq(0) img').show();
+					$('#showsearch ,#search').hide();
+					link = "https://www.reddit.com/r/QidianUnderground/search.json?";
+					getData(textfieldVal,link,30,'search_results');
+
+					if(divTohide == 'novelinfo'){
+						$('#'+divTohide+' ul li:eq(0) h1').remove();
+						$('#'+divTohide+' ul li:gt(0)').remove();
+						localStorage.setItem("divTohide",'updates');
 					}
+					else{
+						localStorage.setItem("divTohide",divTohide);
+					}
+
+				}else{
+					textfield.css('border-bottom-color','#ff0a0a');
+					textfield.val('').focus();
+				}
 			});
 
-			$('.switsh ul li').on('click', function(){
-				if($(this).hasClass('icon-night')){
-					$('body, header a, .switsh, .icon-search, #reader span.icon-cancel, #search input[type="text"], .updates, span.numbers, #reader, .text').addClass('night');
-					$("header img").attr("src","img/qb.png");
-					$(".icon-light").css('display','initial');
+			$('#switsh ul li').on('click', function(){
+				if($(this).hasClass('icon-moon')){
+					$('body,#updates, #switsh ul, header a, header a img, header p, #reader span.icon-close,.updates, span.numbers, #reader, .text, input#textfield').addClass('night');
+					$('header img').attr('src','img/nmp.png');
+					$(".icon-sun").css('display','inline-block');
 					$(this).hide();
 					
-				}else if($(this).hasClass('icon-light')){
-					$('body, header a, .switsh, .icon-search, #reader span.icon-cancel, #search input[type="text"], .updates, span.numbers, #reader, .text').removeClass('night');
-					$("header img").attr("src","img/qw.png");
-					$(".icon-night").show();
+				}else if($(this).hasClass('icon-sun')){
+					$('body,#updates, #switsh ul, header a, header a img, header p, #reader span.icon-close,.updates, span.numbers, #reader, .text, input#textfield').removeClass('night');
+					$('header img').attr('src','img/lmp.png');
+					$(".icon-moon").show();
 					$(this).hide();
 
-				}else if($(this).hasClass('icon-up')){
-					$('body,html').animate({scrollTop:0},500);
+				}else if($(this).hasClass('icon-chevron-thin-up')){
+					$('body,html').animate({scrollTop:0},300);
 				}
 
+			});
+
+			$('#showBar').on('click', function(){
+				$('#switsh').toggle();
+				$(this).toggleClass('icon-x-square');
 			});
 
 			$(window).on('scroll',function(){

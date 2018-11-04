@@ -1,3 +1,10 @@
+
+function SortChapter(obj){
+  obj.sort(function(a,b){
+    return -(a.chapter.localeCompare(b.chapter));
+  })
+};
+
 function timeSince(date) {
 
   var secs = Math.floor(((new Date().getTime()/1000) - date));
@@ -58,173 +65,224 @@ function timeSince(date) {
 function cleanUrl(qfs,toClean){
 	return qfs+toClean.replace(/[':,."]/g, "%27").replace(/ /g, "+");
 };
+var ChapFilter = ["Living With a Temperamental Adonis","The Legend of Chu Qiao","The Adonis Next Door"];
 
-function getData(link,limit,divID){
+function getData(query,link,limit,divID){
+
+  $('#'+divID+ ' ul li:eq(0)').append("<img id='spin' src='imgs/spin.gif' alt='spinner'>");
+  var updates = $("#"+divID);
+  clenQ = query.replace(/the /i,'');
 $.ajax({
-		method: 'GET',
-		data:{
-			limit : limit
-		},
-		dataType: 'json',
-		url: link,
-		tryCount: 0,
-		retryLimit: 2,
-		index: 1,
-		success: function(redditData){
-			if(!$.trim(redditData.data.children)){
-				$('#'+divID+' ul li:eq(1)').append('<h2>No results matching your search.</h2>');
-			}else{
-			var Books = [],
-				etr   = 1;
-			$.map(redditData.data.children,function(thread, ind){
+    method: 'GET',
+    data:{
+      q: clenQ,
+      sort : 'new',
+      restrict_sr : 'on',
+      t: 'all',
+      limit : limit
+    },
+    dataType: 'json',
+    url: link,
+    tryCount: 0,
+    retryLimit: 2,
+    index: 1,
+    success: function(redditData){
+      // console.log(redditData.data.children[0].data.name);
+      // console.log(redditData.data.children[limit-1].data.name);
+      if(!$.trim(redditData.data.children)){
+        $('#'+divID + ' ul').append('<li><h2>No results matching your search.</h2></li>');
+        $('#textfield').val('');
+      }else{
+      var Books = [], etr   = 1;
+      $.map(redditData.data.children,function(thread, ind){
 
-				var bookAndChap      = thread.data.title.toLowerCase(),
-					link	   		 = thread.data.url,
-					Rdate 	   		 = thread.data.created_utc,
-					date       		 = timeSince(Rdate),
-					redditLink		 = "https://www.reddit.com"+thread.data.permalink,
-					score			 = thread.data.score,
-					comments		 = thread.data.num_comments,
-					self			 = thread.data.is_self;
+        var bookAndChap = thread.data.title.toLowerCase(),
+            link        = thread.data.url,
+            Rdate       = thread.data.created_utc,
+            date        = timeSince(Rdate),
+            redditLink  = "https://www.reddit.com"+thread.data.permalink,
+            score       = thread.data.score,
+            comments    = thread.data.num_comments,
+            self        = thread.data.is_self,
+            thumbnail_height =  thread.data.thumbnail_height;
 
-				if(!self){
+        if(!self && thumbnail_height == null){
 
-					var book 	= bookAndChap.replace(/-*\-/gi,' ').replace(/[&\/\\#+()!$~%."*?<>{}]/g, ''),
-					chapter = bookAndChap.match(/\d+/gi);
+          var book = bookAndChap.replace(/ *\{[^)]*\} */g, "");
+          book = book.replace(/ \- |\- | \-/gi,' ').replace(/[&\/\\#+()!$~%."*?<>]/g, '');
 
-					if(book.match(/ *\d+/gi,'')!==null){
-						num  = book.match(/ *\d+/gi,'')[0];
-						book = book.substring(0,book.indexOf(num));
-					}
+          if(book.match(/:/gi)!=null && book.length>10){
+            var dpoin = book.match(/:/gi)[0];
+            var matchLen = book.substring(0,book.indexOf(dpoin)).length;
+            if(matchLen>10){
+              book = book.substring(0,book.indexOf(dpoin));
+            }
+          }
+          if(book.match(/ *\d+/gi,'')!==null){
+            var num  = book.match(/ *\d+/gi,'')[0];
+            book = book.substring(0,book.indexOf(num));
+          }
+          
+          if(book.match(/chapter.*\b/gi) != null){
+            book=book.replace(/chapter.*\b/gi,'').trim();
+          }
 
-					var bookX = book.match(/chapter.*\b/gi);
-					if(bookX != null){
-						book=book.replace(/chapter.*\b/gi,'').trim();
-					}
+          var bookComp = book.toLowerCase().replace(/the /gi,'').trim();
+          bookComp = bookComp.replace(/ +/g, "").substring(0,10);
 
-					bookComp = book.toLowerCase().replace(/the /g,'').trim();
-					bookComp = bookComp.replace(/ +/g, "").substring(0,16);
+          var chapter = bookAndChap.match(/\d+/gi);
 
-					if(chapter != null){
-						if(chapter.length>1){
-							// chapter = chapter[0]+" - "+chapter[1];
-							chapter = chapter.join(' - ');
-						}
-						else if(chapter.length=1){
-							chapter = chapter[0];
-						}
-					}else(chapter = 'XXX');
+          if(chapter != null){
+            if(chapter.length>1){
+              $.each(ChapFilter, function(i,chap){
+                var chapComp = chap.toLowerCase().replace(/the /gi,'').trim();
+                chapComp = chapComp.replace(/ +/g, "").substring(0,10);
+                if(chapComp == bookComp){
+                  chapter.shift();
+                }
+              });
+              var chapterNum = chapter[chapter.length-1] - chapter[0]+1;
+              chapter = chapter.join(' - ')+" ("+chapterNum+")";
+            }
+            else if(chapter.length=1){
+              chapter = chapter[0];
+            }
+          }else(chapter = 'XXX');
 
-					if(bookComp.length>=7){
-						bookAndChap = book+" - "+chapter;
-						var novel = {title:book,bookComp:bookComp,chapter:chapter,link:link,date:date,redditLink:redditLink,score:score,comments:comments};
-						Books.push(novel);	
-					}	
-				}		
-			});
-			newA=[];
-			$.map(Books,function(data,indes){
-				if(newA.indexOf(data.bookComp) === -1){
-        			newA.push(data.bookComp);
-        			url = cleanUrl("novel.html?q=",data.title);
-        			$('#'+divID+' ul').append(
-        				
-        				"<li><span class='numbers'>"
-        				+etr+
-        				"</span><span class='bookups icones icon-more'></span><span class='read icones icon-book-open'></span><a href='"
-        				+url+
-        				"' class='link'><h2>"
-        				+data.title+
-        				"</h2></a><a class='icones icon-link' href='"
-        				+data.link+
-        				"' target='_blank'><h3>Chapter: "
-        				+data.chapter+
-        				"</h3></a><p><a href='"
-        				+data.redditLink+
-        				"' class='sublinks' target='_blank'><span class='icones icon-fire'>Reddit Thread</span><span class='icones icon-thermo'>Score: "
-        				+data.score+
-        				"</span><span class='icones icon-commento'>Comments: "
-        				+data.comments+
-        				"</span></a></p><p id='date'>"
-        				+data.date+"</p></li>"
-					);
-					etr++;
-    			}
-			});
+          if(bookComp.length>=7 && chapter !== "XXX"){
+            var bookAndChap = book+" - "+chapter,
+                novel       = {title:book,bookAndChap:bookAndChap,bookComp:bookComp,chapter:chapter,link:link,date:date,redditLink:redditLink,score:score,comments:comments};
+            Books.push(novel);  
+          }
+        }
+      });
 
-			var updates 	= $('#updates'),
-				novelsearsh = $('#novelsearsh'),
-				hideSearch  = $('#confiozesearsh');
+      
+      if(divID == 'updates'){
+        var newA=[];
+        $.map(Books,function(data,i){
+          if(newA.indexOf(data.bookComp) === -1){
+            newA.push(data.bookComp);
+            var url = cleanUrl("novel.html?q=",data.title);
+            updates.children('ul').append(
+              "<li><span class='numbers'>"
+              +etr+
+              "</span><span class='bookups icones icon-plus-square'></span><span class='read icones icon-book-open'></span><a href='"
+              +url+
+              "' class='link'><h2>"
+              +data.title+
+              "</h2></a><a class='icones icon-external-link' href='"
+              +data.link+
+              "' target='_blank'><h3>Chapter: "
+              +data.chapter+
+              "</h3></a><p><a href='"
+              +data.redditLink+
+              "' class='sublinks' target='_blank'><span class='icones icon-reddit1'>Reddit Thread</span><span class='icones icon-thermometer'>Score: "
+              +data.score+
+              "</span><span class='icones icon-chat_bubble_outline'>Comments: "
+              +data.comments+
+              "</span></a></p><p id='date'>"
+              +data.date+"</p></li>"
+        );
+        etr++;
+            }
+        });
+        var miniToc = $(updates.find('span.icon-plus-square')),
+            read    = $(updates.find('span.read')),
+            header  = $(updates.find('h2'));
 
-			$('.bookups').on('click',function(){
-				window.currentPlace = $(this).parent().offset().top;
+        header.on('click',function(e){
+          $('body,html').animate({scrollTop:0},300);
+          header = $(this).text();
+          scroll = $(this).parents('li').offset().top;
+          novelInfo('#'+divID,header);
+          localStorage.setItem('scroll',scroll);
+          e.preventDefault();
+        });
 
-				query = $(this).siblings('a.link').children('h2').text();
-				updates.hide();
-				novelsearsh.show();
-				hideSearch.hide();
-				$('img#spin').show();
-				$('#novelsearsh ul li:eq(0)').append("<h1>"+query+"</h1>");
-				getLatest(query, 30,'novelsearsh');
-				$('body,html').animate({scrollTop:0},500);
+        miniToc.on('click',function(){
+          if($(this).hasClass('icon-plus-square')){
+            $(this).siblings().not('a.link').hide();
+            $(this).next('span').after("<img id='load' src='imgs/spiny.gif'>");
+            selectedNovel = $(this).siblings('a.link').children('h2').text();
+            momy  = $(this).parents('li');
+            toc(momy,selectedNovel,20,divID);
+            $(this).removeClass('icon-plus-square').addClass('icon-th-menu');
+            $(momy).find('.icon-th-menu').on('click',function(){
+              $(this).parent('li').next('li#toc').slideToggle(150);
+              $(this).siblings().not('a.link').toggle();
+            });
+          }
+        });
 
-				visiDiv = $('.updates:visible:eq(0)').attr('id');
-				localStorage.setItem("visiDiv",visiDiv);
-			});
+        read.on('click', function(){
+          $(this).after("<img id='load' src='imgs/spiny.gif'>");
+          url=$(this).siblings('a.icon-external-link').attr('href');
+          ttl=$(this).siblings('a.link').children('h2').text();
+          mom=$(this).parent();
+          redearScroll=$(this).parent().offset().top;
+          Reader(url,ttl,mom);
+          localStorage.setItem("redearScroll",redearScroll);
+        });
 
-			$('#novelsearsh .icon-cancel').on('click',function(){
-				updates.show();
-				novelsearsh.hide();
-				hideSearch.show();
-				$('span.globoscorescore').empty();
-				$('#novelsearsh ul li:eq(0) h1 ,#novelsearsh ul li:gt(1)').remove();
-				$('body,html').animate({scrollTop:window.currentPlace},300);
+      }else if(divID=="search_results"){
 
-				visiDiv = $('.updates:visible:eq(0)').attr('id');
-				localStorage.setItem("visiDiv",visiDiv);
-			});
+        var bookLen = Books.length, newA=[], bestMatch = [], num = 0;
+        if(bookLen>1){
+          $('#'+divID+' ul').append("<li class='bestmatch'></li>");
 
-			$("#updates .read").on('click', function(){
-				$(this).after("<span class='spinner'><img id='spin' src='imgs/spiny.gif'></span>");
-				url=$(this).siblings('a.icon-link').attr('href');
-				window.currentPlace = $(this).parent().offset().top;
-				Reader(url);
-			});
+          $.map(Books,function(data,ind){
+            if(bestMatch.indexOf(data.bookComp) === -1){
+              bestMatch.push(data.bookComp);
+              url = cleanUrl("novel.html?q=", data.title);
+              $('#'+divID+' ul li.bestmatch').append("<a href='"+url+"'><h2 class='icones icon-book1'>"+data.title+"</h2></a>");
+            }
+          });
 
-			$('#reader .icon-cancel').on('click', function(){
-				$('.spinner').remove();
-				$('#reader .text').empty();
-				$('#reader').hide();
-				$('#wrap').show();
-				if(typeof window.currentPlaceSearsh == 'undefined'){
-					$('body,html').animate({scrollTop:window.currentPlace},300);
-				}else if(typeof window.currentPlaceSearsh !== 'undefined') {
-					$('body,html').animate({scrollTop:window.currentPlaceSearsh},300);
-					window.currentPlaceSearsh = undefined;
-				}
-			});
+          $.map(Books,function(data,i){
+          if(newA.indexOf(data.bookAndChap) === -1){
+            newA.push(data.bookAndChap);
+            $('#'+divID+' ul').append("<li><span class='numbers'>"+etr+"</span><span class='read icones icon-book-open'></span><h2>"+data.title+"</h2><a class='icones icon-external-link' href='"+data.link+"' target='_blank'><h3>Chapter: "+data.chapter+"</h3></a><p id='date'>"+data.date+"</p></li>");
+            num+=data.score;
+            etr++;          
+            }
+          });
 
-			$('#updates ul li a h2').on('click',function(e){
-				name = $(this).text();
-				visiDiv = localStorage.getItem("visiDiv");
-				$('body,html').animate({scrollTop:0},300);
-				novelInfo('#'+visiDiv,name);				
-				e.preventDefault();
-			});
-		}
-		},
-		beforeSend: function(jqXHR, settings){
-			console.log('loading'+ ' / url: '+settings.url);
-		},
-		complete: function(){
-			console.log('complete '+ divID );
-			$('img#spin').hide();
-			visiDiv = $('.updates:visible:eq(0)').attr('id');
-			localStorage.setItem("visiDiv",visiDiv);
-		},
-		error: function(xhr, status, error){
-			if (status == 'timeout' || xhr.status == 503) {
-				console.log(xhr.status);
+          $('#'+divID+" .read").on('click', function(){
+            $(this).after("<img id='load' src='imgs/spiny.gif'>");
+            url=$(this).siblings('a.icon-external-link').attr('href');
+            ttl=$(this).siblings('h2').text();
+            mom=$(this).parent();
+            redearScroll=$(this).parent().offset().top;
+            Reader(url,ttl,mom);
+            localStorage.setItem("redearScroll",redearScroll);
+          });
+
+          $('#search_results li a h2').on('click',function(e){
+            $(' img#spin').show();
+            header = $(this).text();
+            window.novelInfoittSearch = true;
+            $('body,html').animate({scrollTop:0},300);
+            novelInfo('#search_results',header);
+            e.preventDefault();
+          });
+        }else{
+          $('#'+divID+' ul').append('<li><h2>No results matching your query.</h2></li>');
+          $('#textfield').val('');
+        }
+      }
+    }
+    },
+    beforeSend: function(jqXHR, settings){
+      console.log('loading'+ ' / url: '+settings.url);
+    },
+    complete: function(){
+      console.log('complete '+ divID );
+      // $("#"+divID + ' img#spin').remove();
+    },
+    error: function(xhr, status, error){
+      if (status == 'timeout' || xhr.status == 503) {
+        console.log(xhr.status);
             this.tryCount++;
             if (this.tryCount <= this.retryLimit) {
                 //try again
@@ -232,133 +290,170 @@ $.ajax({
                 return;
             }         
             return;
-        	}
-		}
-	});
+          }
+    }
+  });
 };
 
-function getLatest(query,limit,divID){
-	$.ajax({
-		method: 'GET',
-		data:{
-			q: query,
-			sort : 'new',
-			restrict_sr : 'on',
-			t: 'all',
-			limit : limit
-		},
-		dataType: 'json',
-		url: 'https://www.reddit.com/r/QidianUnderground/search.json?',
-		tryCount: 0,
-		retryLimit: 2,
-		index: 1,
-		success: function(redditData){
-			if(!$.trim(redditData.data.children)){
-				$('#'+divID+' ul li:eq(1)').empty().append('<h2>No results matching your search.</h2>');
-			}else{
-			var Books = [],
-				etr   = 1;
-				$.map(redditData.data.children,function(thread, ind){
+function toc(momy,query,limit,divID){
+  clenQ = query.replace(/the /i,'');
+  $.ajax({
+    method: 'GET',
+    data:{
+      q: clenQ,
+      sort : 'new',
+      restrict_sr : 'on',
+      t: 'all',
+      limit : limit
+    },
+    dataType: 'json',
+    url: 'https://www.reddit.com/r/QidianUnderground/search.json?',
+    tryCount: 0,
+    retryLimit: 2,
+    index: 1,
+    success: function(redditData){
+      var after = redditData.data.after;
+      localStorage.setItem("after",after);
+      if(!$.trim(redditData.data.children)){
+        $('#'+divID+' ul').append('<li><h2>try later.</h2></li>');
+      }else{
+      
+      var Books = [],
+          etr   = 1;
+        $.map(redditData.data.children,function(thread, ind){
 
-					var bookAndChap  = thread.data.title.toLowerCase(),
-					link	   		 = thread.data.url,
-					Rdate 	   		 = thread.data.created_utc,
-					date       		 = timeSince(Rdate),
-					redditLink		 = "https://www.reddit.com"+thread.data.permalink,
-					score			 = thread.data.score,
-					self			 = thread.data.is_self;
+          var bookAndChap  = thread.data.title.toLowerCase(),
+          link             = thread.data.url,
+          Rdate            = thread.data.created_utc,
+          date             = timeSince(Rdate),
+          score            = thread.data.score,
+          self             = thread.data.is_self;
 
-					if(!self){
+          if(!self){
 
-						var book 	= bookAndChap.replace(/-*\-/gi,' ').replace(/[&\/\\#+()!$~%."*?<>{}]/g, ''),
-							chapter = bookAndChap.match(/\d+/gi);
+            var book = bookAndChap.replace(/ *\{[^)]*\} */g, "");
+            book = book.replace(/ \- |\- | \-/gi,' ').replace(/[&\/\\#+()!$~%."*?<>]/g, '');
 
-						if(book.match(/ *\d+/gi,'')!==null){
-							num  = book.match(/ *\d+/gi,'')[0];
-							book = book.substring(0,book.indexOf(num));
-						}
+            if(book.match(/:/gi)!=null && book.length>10){
+            var dpoin = book.match(/:/gi)[0];
+            var matchLen = book.substring(0,book.indexOf(dpoin)).length;
+            if(matchLen>10){
+              book = book.substring(0,book.indexOf(dpoin));
+            }
+            }
+            if(book.match(/ *\d+/gi,'')!==null){
+              var num  = book.match(/ *\d+/gi,'')[0];
+              book = book.substring(0,book.indexOf(num));
+            }
 
+            if(book.match(/chapter*\b/gi) != null){
+              book=book.replace(/chapter.*\b/gi,'').trim();
+            }
 
-						var bookX = book.match(/chapter.*\b/gi);
-						if(bookX != null){
-							book=book.replace(/chapter.*\b/gi,'').trim();
-						}
+            var bookComp = book.toLowerCase().replace(/the /gi,'').trim();
+            bookComp = bookComp.replace(/'s |’s |i'm |i’m /gi,' ');
+            bookComp = bookComp.replace(/ +/g, "").substring(0,10);
 
-						bookComp = book.toLowerCase().replace(/the /g,'').trim();
-						bookComp = bookComp.replace(/ +/g, "").substring(0,16);
+            var chapter = bookAndChap.match(/\d+/gi);
 
-						if(chapter != null){
-							if(chapter.length>1){
-								// chapter = chapter[0]+" - "+chapter[1];
-								chapter = chapter.join(' - ');
-							}
-							else if(chapter.length=1){
-								chapter = chapter[0];
-							}
-						}else(chapter = 'XXX');
+            if(chapter != null){
+              if(chapter.length>1){
+                $.each(ChapFilter, function(i,chap){
+                  var chapComp = chap.toLowerCase().replace(/the /gi,'').trim();
+                  chapComp = chapComp.replace(/ +/g, "").substring(0,10);
+                  if(chapComp == bookComp){
+                    chapter.shift();
+                  }
+                });
+                var chapterNum = chapter[chapter.length-1] - chapter[0]+1;
+                chapter = chapter.join(' - ')+" ("+chapterNum+")";
+              }
+              else if(chapter.length=1){
+                chapter = chapter[0];
+              }
+            }else(chapter = 'XXX');
 
-						if(bookComp.length>=7){
-							bookAndChap = book+" - "+chapter;
-							var novel = {bookComp:bookComp,bookAndChap:bookAndChap,title:book,chapter:chapter,link:link,score:score,date:date};
-							Books.push(novel);	
-						}
-					}
-				});
+            if(bookComp.length>=7 && chapter !== "XXX"){
+              if(divID!=="search_results"){
+                var queryFilter = query.toLowerCase().replace(/the /gi,'').trim();
+                queryFilter = queryFilter.replace(/'s |’s |i'm |i’m /gi,' ');
+                queryFilter = queryFilter.replace(/ +/g, "").substring(0,10);
+                if(bookComp == queryFilter){
+                  var bookAndChap = book+" - "+chapter,
+                      novel = {bookComp:bookComp,bookAndChap:bookAndChap,title:book,chapter:chapter,link:link,score:score,date:date};
+                  Books.push(novel);
+                }
+              }else{
+                var bookAndChap = book+" - "+chapter,
+                    novel = {bookComp:bookComp,bookAndChap:bookAndChap,title:book,chapter:chapter,link:link,score:score,date:date};
+                Books.push(novel);
+              }
+            }
+          }
+        });
 
-			newA=[]; bestMatch = [];
-			num = 0;
+      SortChapter(Books);
 
-			if(divID=="search_results"){
-				$('#'+divID+' ul').append("<li class='bestmatch'><h1>Novels:</h1></li>")
-				$.map(Books,function(data,ind){
-					if(bestMatch.indexOf(data.bookComp) === -1){
-						bestMatch.push(data.bookComp);
-						url = cleanUrl("novel.html?q=", data.title);
-						$('#'+divID+' ul li.bestmatch').append("<a href='"+url+"' class='icones icon-link'><h2>"+data.title+"</h2></a>");
-					}
-				});
-			}
+      var bookLen = Books.length, newA=[], num = 0;
 
-			$.map(Books,function(data,indes){
-				if(newA.indexOf(data.bookAndChap) === -1){
-        			newA.push(data.bookAndChap);
-        			$('#'+divID+' ul').append("<li><span class='read icones icon-book-open'></span><h2>"+data.title+"</h2><a class='icones icon-link' href='"+data.link+"' target='_blank'><h3>Chapter: "+data.chapter+"</h3></a><p id='date'>"+data.date+"</p></li>");
-        			num+=data.score;
-					etr++;					
-    			}
-			});
+      if(bookLen>1){
+        if(divID == 'novelinfo'){
+          $('#'+divID+' ul').append("<li id='toc'><ol id='tocorder'></ol></li>");
+          var lastchap = "<span>Chapter: "+Books[0]['chapter']+"<span id='date'> "+Books[0]['date']+"</span></span>";
+          $('#'+divID+' ul li span.noveldata').append("<p><b class='icones icon-schedule'>Last Release: </b><br>"+lastchap+"</p>");
+        }else{
+          $(momy).after("<li id='toc'><ol id='tocorder'></ol></li>");
+          $(momy).next('li').find('ol#tocorder').append("<li><h3>Table of Contents:</h3></li>");
+        }
 
-			if(divID=="novelsearsh"){
-				globoscore = Math.ceil(num/(newA.length-1));
-				$('#'+divID+' ul li:eq(1)').empty().append("<span class='globoscorescore'></span>");
-				$('#'+divID+' ul li span.globoscorescore').text("Novel Score: "+globoscore);
-			}
+        var toc = $(momy).next('li').find('ol#tocorder');
 
-			$("#novelsearsh .read, #search_results .read").on('click', function(){
-				url=$(this).siblings('a.icon-link').attr('href');
-				$(this).after("<span class='spinner'><img id='spin' src='imgs/spiny.gif'></span>");
-				window.currentPlaceSearsh = $(this).parent().offset().top;
-				Reader(url);
-			});
+        $.map(Books,function(data,indes){
+        if(newA.indexOf(data.chapter) === -1){
+              newA.push(data.chapter);
+              toc.append("<li data-link='"+data.link+"'><h4><span id='num'>"+etr+"</span>Chapter: "+data.chapter+"</h4><span id='date'>"+data.date+"</span></li>");
+          etr++;          
+          }
+        });
+        localStorage.setItem('etr',etr);
+        if (divID == 'novelinfo' && after !== null && bookLen>14) {
+          $('#'+divID+' ul').append("<li id='loadnext'><b class='icones icon-plus-square'>Load More</b></li>");
+        }
+        toc.find('li[data-link]').on('click', function(){
+          $(this).append("<img id='load' src='imgs/spiny.gif'>");
+          var mom = $(this),
+              url = mom.data('link');
+          if(divID == 'novelinfo'){
+            var ttl = $('#novelinfo ul li:eq(0) h1').text();
+            redearScroll = $('li#showtoc').offset().top;
+          }else{
+            var ttl = $(momy).find('h2').text();
+            redearScroll = $(momy).offset().top;
+          }
+          Reader(url,ttl,mom);
+          localStorage.setItem("redearScroll",redearScroll);
+        });
 
-			$('#search_results li a h2').on('click',function(){
-				// name = $(this).text();
-				// localStorage.setItem("novelName",name);
-				// window.open('novel.html?q='+name,'_self');
-			});
-
-			}
-		},
-		beforeSend: function(jqXHR, settings){
-			console.log('loading'+ ' / url: '+settings.url);
-		},
-		complete: function(){
-			console.log('complete '+ divID );
-			$('img#spin').hide();
-		},
-		error: function(xhr, status, error){
-			if (status == 'timeout' || xhr.status == 503) {
-				console.log(xhr.status);
+        $("#loadnext").on('click', function(){
+          $(this).append("<img id='load' src='imgs/spiny.gif'>");
+          tocMore(query,10);
+        });
+      }else{
+        $(momy).remove();
+      }
+    }
+  },
+    beforeSend: function(jqXHR, settings){
+      console.log('loading'+ ' / url: '+settings.url);
+    },
+    complete: function(){
+      console.log('complete toc');
+      $('img#load').remove();
+      $('img#spin').remove();
+    },
+    error: function(xhr, status, error){
+      if (status == 'timeout' || xhr.status == 503) {
+        console.log(xhr.status);
             this.tryCount++;
             if (this.tryCount <= this.retryLimit) {
                 //try again
@@ -366,95 +461,147 @@ function getLatest(query,limit,divID){
                 return;
             }         
             return;
-        	}
-		}
-	});
+          }
+    }
+  });
 };
 
-function novelList(link,limit,divID){
-$.ajax({
-		method: 'GET',
-		data:{
-			limit : limit
-		},
-		dataType: 'json',
-		url: link,
-		tryCount: 0,
-		retryLimit: 2,
-		index: 1,
-		success: function(redditData){
-			if(!$.trim(redditData.data.children)){
-				$('#'+divID+' ul').append('<li><h2>No results matching your search.</h2></li>');
-			}else{
-			var Books = [];
-			$.map(redditData.data.children,function(thread, ind){
+function tocMore(query,limit){
+  var after = localStorage.getItem("after");
+  clenQ = query.replace(/the /i,'');
+  $.ajax({
+    method: 'GET',
+    data:{
+      q: clenQ,
+      sort : 'new',
+      restrict_sr : 'on',
+      t: 'all',
+      limit : limit,
+      after: after
+    },
+    dataType: 'json',
+    url: 'https://www.reddit.com/r/QidianUnderground/search.json?',
+    tryCount: 0,
+    retryLimit: 2,
+    index: 1,
+    success: function(redditData){
+      var after = redditData.data.after;
+      localStorage.setItem("after",after);
+      if(after == null){
+            $('#loadnext').html("<b>End Of Results</b>");
+            $('#loadnext').unbind();
+            $('#loadnext').css('cursor','not-allowed');
+          }
+      if(!$.trim(redditData.data.children)){
+        $('#'+divID+' ul').append('<li><h2>try later.</h2></li>');
+      }else{
+      
+      var Books = [],
+          etr   = localStorage.getItem('etr');
+        $.map(redditData.data.children,function(thread, ind){
 
-				var bookAndChap      = thread.data.title.toLowerCase(),
-					self			 = thread.data.is_self;
-				
-					if(!self){
+          var bookAndChap  = thread.data.title.toLowerCase(),
+          link             = thread.data.url,
+          Rdate            = thread.data.created_utc,
+          date             = timeSince(Rdate),
+          score            = thread.data.score,
+          self             = thread.data.is_self;
 
-						var book 	= bookAndChap.replace(/-*\-/gi,' ').replace(/[&\/\\#+()!$~%."*?<>{}]/g, '');
+          if(!self){
 
-						if(book.match(/ *\d+/gi,'')!==null){
-							num  = book.match(/ *\d+/gi,'')[0];
-							book = book.substring(0,book.indexOf(num));
-						}
+            var book = bookAndChap.replace(/ *\{[^)]*\} */g, "");
+            book = book.replace(/ \- |\- | \-/gi,' ').replace(/[&\/\\#+()!$~%."*?<>]/g, '');
 
-						var bookX = book.match(/chapter.*\b/gi);
-						if(bookX != null){
-							book=book.replace(/chapter.*\b/gi,'').trim();
-						}
+            if(book.match(/:/gi)!=null && book.length>10){
+            var dpoin = book.match(/:/gi)[0];
+            var matchLen = book.substring(0,book.indexOf(dpoin)).length;
+            if(matchLen>10){
+              book = book.substring(0,book.indexOf(dpoin));
+            }
+            }
+            if(book.match(/ *\d+/gi,'')!==null){
+              var num  = book.match(/ *\d+/gi,'')[0];
+              book = book.substring(0,book.indexOf(num));
+            }
 
-						bookComp = book.toLowerCase().replace(/the /g,'').trim();
-						bookComp = bookComp.replace(/ +/g, "").substring(0,16);
-						
-						if(bookComp.length>=7){
-							var novel = {title:book,bookComp:bookComp};
-							Books.push(novel);	
-						}
-					}		
-			});
-			newA=[];
-			$.map(Books,function(data,indes){
-				if(newA.indexOf(data.bookComp) === -1){
-        			newA.push(data.bookComp);
-        			url = cleanUrl("novel.html?q=",data.title);
-        			$('#'+divID+' ul').append(
-        				"<li><a href='"+url+"'><h5>"+data.title+"</h5></a></li>"
-					);
-    			}
-			});
+            if(book.match(/chapter*\b/gi) != null){
+              book=book.replace(/chapter.*\b/gi,'').trim();
+            }
+            var bookComp = book.toLowerCase().replace(/the /gi,'').trim();
+            bookComp = bookComp.replace(/'s |’s |i'm |i’m /gi,' ');
+            bookComp = bookComp.replace(/ +/g, "").substring(0,10);
 
-			$('#novellist ul li:gt(0) a').on('click',function(e){
-				name = $(this).children('h5').text();
-				visiDiv = localStorage.getItem("visiDiv");
+            var chapter = bookAndChap.match(/\d+/gi);
 
-				clickedTit = localStorage.getItem("clickedTit");
-				if(clickedTit==undefined || clickedTit!=name){
-					novelInfo('#'+visiDiv,name);
-				}
-				$('body,html').animate({scrollTop:0},300);
-				e.preventDefault();
-			});
-			$('#novelinfo  .icon-cancel').on('click', function(){
-				$('#novelinfo').hide();
-				$('#novelinfo ul li h1').text('');
-				$('#novelinfo ul li:gt(0)').remove();
-				$('#'+visiDiv).show();
-				localStorage.setItem("clickedTit",undefined);
-			});
-		}
-		},
-		beforeSend: function(jqXHR, settings){
-			console.log('loading'+ ' / url: '+settings.url);
-		},
-		complete: function(){
-			console.log('complete '+ divID );
-		},
-		error: function(xhr, status, error){
-			if (status == 'timeout' || xhr.status == 503) {
-				console.log(xhr.status);
+            if(chapter != null){
+              if(chapter.length>1){
+                $.each(ChapFilter, function(i,chap){
+                  var chapComp = chap.toLowerCase().replace(/the /gi,'').trim();
+                  chapComp = chapComp.replace(/ +/g, "").substring(0,10);
+                  if(chapComp == bookComp){
+                    chapter.shift();
+                  }
+                });
+                var chapterNum = chapter[chapter.length-1] - chapter[0]+1;
+                chapter = chapter.join(' - ')+" ("+chapterNum+")";
+              }
+              else if(chapter.length=1){
+                chapter = chapter[0];
+              }
+            }else(chapter = 'XXX');
+
+            if(bookComp.length>=7 && chapter !== "XXX"){
+                var queryFilter = query.toLowerCase().replace(/the /gi,'').trim();
+                queryFilter = queryFilter.replace(/'s |’s |i'm |i’m /gi,' ');
+                queryFilter = queryFilter.replace(/ +/g, "").substring(0,10);
+                if(bookComp == queryFilter){
+                  var bookAndChap = book+" - "+chapter,
+                      novel = {bookComp:bookComp,bookAndChap:bookAndChap,title:book,chapter:chapter,link:link,score:score,date:date};
+                  Books.push(novel);
+                }
+            }
+          }else{
+            $('#loadnext').html("<b>End Of Results</b>");
+            $('#loadnext').unbind();
+            $('#loadnext').css('cursor','not-allowed');
+          }
+        });
+
+        SortChapter(Books);
+
+        var bookLen = Books.length, newA=[], num = 0;
+        var toc = $('#tocorder');
+        if(bookLen>1){
+          $.map(Books,function(data,indes){
+          if(newA.indexOf(data.chapter) === -1){
+                newA.push(data.chapter);
+                toc.append("<li data-link='"+data.link+"'><h4><span id='num'>"+etr+"</span>Chapter: "+data.chapter+"</h4><span id='date'>"+data.date+"</span></li>");
+            etr++;          
+            }
+          localStorage.setItem('etr',etr);
+          });
+        }
+        toc.find('li').unbind().on('click', function(){
+        $(this).append("<img id='load' src='imgs/spiny.gif'>");
+        var mom = $(this),
+            url = mom.data('link');
+        var ttl = $('#novelinfo ul li:eq(0) h1').text();
+        redearScroll = $('li#showtoc').offset().top;
+        localStorage.setItem("redearScroll",redearScroll);
+        Reader(url,ttl,mom);
+        });
+      }
+    },
+    beforeSend: function(jqXHR, settings){
+      console.log('loading'+ ' / url: '+settings.url);
+    },
+    complete: function(){
+      console.log('complete tocMore');
+      $('img#load').remove();
+    },
+    error: function(xhr, status, error){
+      if (status == 'timeout' || xhr.status == 503) {
+        console.log(xhr.status);
             this.tryCount++;
             if (this.tryCount <= this.retryLimit) {
                 //try again
@@ -462,78 +609,92 @@ $.ajax({
                 return;
             }         
             return;
-        	}
-		}
-	});
+          }
+    }
+  });
 };
 
 function novelInfo(tohide,title){
+  var infoDiv = '#novelinfo';
+  $(infoDiv + ' ul li:eq(0)').append("<img id='spin' src='imgs/spin.gif' alt='spinner'>");
 $.ajax({
-		method: 'GET',
-		dataType: 'json',
-		url: 'novels.json',
-		tryCount: 0,
-		retryLimit: 2,
-		index: 1,
-		success: function(novelData){
-			var infoDiv = '#novelinfo';
-			$(infoDiv).show();
-			$(tohide).hide();
+    method: 'GET',
+    dataType: 'json',
+    url: 'novels_i.json',
+    tryCount: 0,
+    retryLimit: 2,
+    index: 1,
+    success: function(novelData){
+      
+      $(infoDiv).show();
+      $(tohide).hide();
 
-			if(!$.trim(novelData.novel)){
-				$(infoDiv+' ul').append('<li><h2>No results.</h2></li>');
-			}else{
-				var Books 		  = [],
-					selectedNovel = title;
+      if(!$.trim(novelData.novel)){
+        $(infoDiv+' ul').append('<li><h2>No results.</h2></li>');
+      }else{
+        var Books       = [],
+            selectedNovel = title;
+        $(infoDiv+ 'img#spin').show();
+        $(infoDiv+ ' ul li:eq(0)').append("<h1>"+selectedNovel+"</h1>");
 
-				$(infoDiv+' ul li:gt(0)').remove();
-				$(infoDiv+' ul li h1').text(selectedNovel);
+        localStorage.setItem("clickedTit",name);
+        var itt = false;
 
-				localStorage.setItem("clickedTit",name);
-				var itt = false;
+        selectedComp = selectedNovel.toLowerCase().replace(/the /gi,'').trim();
+        selectedComp = selectedComp.replace(/[&\/\\#()+'’–!$~%. "*:?<>{}-\d]/gi, '').substring(0,12);
+        $.map(novelData.novel, function(novel,i){
+          bookComp=novel.title.toLowerCase().replace(/the /g,'').trim();
+          bookComp=bookComp.replace(/[&\/\\#()+'’–!$~%. "*:?<>{}-\d]/gi, '').substring(0,12);
+          if (bookComp == selectedComp) {
+            synopsis = novel.synopsis.split(" #exp# ");
+            
+            var paraSynop="";
+            $.each(synopsis, function(k, line){
+              
+              paraSynop+="<p>"+line+"</p>";
+            });
+            itt = true;
+            $(infoDiv+' ul').append("<li><span class='noveldata'><p><b class='icones icon-edit-3'>Author:</b></br> "
+              +novel.author+
+              "</p><p><b class='icones icon-translate'>Type:</b></br> "
+              +novel.type+
+              "</p><p><b class='icones icon-bar-chart-2'>Status in COO: </b></br>"
+              +novel.status+
+              "</p><p><b class='icones icon-flag2'>Genre:</b></br> "
+              +novel.genre+
+              "</p></span><img src='"
+              +novel.cover+
+              "' id='cover'></li>");
+            $(infoDiv+' ul').append("<li id='showsynop' class=''><b class='icones icon-subject'>Synopsis</b></li><li id='synop'>"+paraSynop+"</li><li id='showtoc' class=''><b class='icones icon-th-menu'>Table of Contents:</b></li>");
+            var momy = $('li#showtoc');
+            selectedNovel = selectedNovel.replace(/'s |’s |i'm |i’m /gi,' ');
+            toc(momy,selectedNovel,30,'novelinfo');
+          }
+        });
+        if(itt==false){
+          $(infoDiv+' ul').append("<li><h2>Coming soon</h2></li>");
+          $(infoDiv + ' img#spin').remove();
+        }
+        $('#showsynop').on('click',function(){
+          $('#synop').slideToggle(150);
+        });
+        $('#showtoc').on('click',function(){
+          $('#toc, #loadnext').slideToggle(150);
+        });
 
-				selectedComp = selectedNovel.toLowerCase().replace(/the /g,'').trim();
-				selectedComp = selectedComp.replace(/ +/g, "").substring(0,16);
 
-				$.map(novelData.novel, function(novel,i){
-					bookComp=novel.title.toLowerCase().replace(/the /g,'').trim();
-					bookComp=bookComp.replace(/ +/g, "").substring(0,16);
-					if (bookComp == selectedComp) {
-						synopsis = novel.synopsis.split(" #exp# ");
-						paraSynop="";
-						$.each(synopsis, function(k, line){
-							paraSynop+="<p>"+line+"</p>";
-						});
-						itt = true;
-						$(infoDiv+' ul').append("<li><span class='noveldata'><p><b>Author:</b></br> "
-							+novel.author+
-							"</p><p><b>Type:</b></br> "
-							+novel.type+
-							"</p><p><b>Status in COO: </b></br>"
-							+novel.status+
-							"</p><p><b>Genre:</b></br> "
-							+novel.genre+
-							"</p></span><img src='"
-							+novel.cover+
-							"'></li>");
-						$(infoDiv+' ul').append("<li><p><b>Synopsis:</b></br>"+paraSynop+"</p></li>");
-						// getLatest(selectedNovel,30,'novelinfo');
-					}
-				});
-				if(itt==false){
-					$(infoDiv+' ul').append("<li><h2>Coming soon</h2></li>");
-				}
-			}
-		},
-		beforeSend: function(jqXHR, settings){
-			console.log('loading'+ ' / url: '+settings.url);
-		},
-		complete: function(){
-			console.log('complete info' );
-		},
-		error: function(xhr, status, error){
-			if (status == 'timeout' || xhr.status == 503) {
-				console.log(xhr.status);
+      }
+    },
+    beforeSend: function(jqXHR, settings){
+      console.log('loading'+ ' / url: '+settings.url);
+    },
+    complete: function(){
+      console.log('complete info' );
+      // $(infoDiv + ' img#spin').remove();
+    },
+    error: function(xhr, status, error){
+      if (status == 'timeout' || xhr.status == 503) {
+        console.log(xhr.status);
             this.tryCount++;
             if (this.tryCount <= this.retryLimit) {
                 //try again
@@ -541,54 +702,147 @@ $.ajax({
                 return;
             }         
             return;
-        	}
-		}
-	});
+          }
+    }
+  });
 };
 
-function Reader(url){
-	$.ajax({
-			method: 'GET',
-			dataType: 'json',
-			url: url,
-			tryCount: 0,
-			retryLimit: 2,
-			index: 1,
-			success: function(CryptoText){
-				var pass 		  = this.url.split('#'),
-					pass 		  = pass[1],
-					finalText	  = "",
-					decreptedText = sjcl.decrypt(pass, CryptoText.data);
+function Reader(url,ttl,mom){
+  $.ajax({
+      method: 'GET',
+      dataType: 'json',
+      url: url,
+      tryCount: 0,
+      retryLimit: 2,
+      index: 1,
+      success: function(CryptoText){
+        if(CryptoText.status==1){
+          $(mom).children('span.read').remove();
+          $(mom).append("<span class='error'>Error</span>");
+          $(mom).unbind();
+        }else{
+          var pass        = this.url.split('#'),
+            pass          = pass[1],
+            finalText     = "",
+            decreptedText = sjcl.decrypt(pass, CryptoText.data),
+            readerTxt     = $('#reader .text');
 
-				decreptedText = Base64.btou(RawDeflate.inflate(Base64.fromBase64(decreptedText))).replace(/<\/?[^>]+(>|$)/g, "");
-				decreptedText = decreptedText.split("\n").filter(function(e){return e}); 				
-				$.each(decreptedText, function(k, line){
-					finalText+="<p>"+line+"</p>";
-				});
-				
-				$('#reader .text').append(finalText);
-			},
-			beforeSend: function(jqXHR, settings){
-				console.log('loading'+ ' / url: '+settings.url);
-			},
-			complete: function(){
-				console.log('complete reader');
-				$('#reader').show();
-				$('#wrap').hide();				
-				$('body,html').animate({scrollTop:0},300);
-				$('img#spin').hide();
-			},
-			error: function(xhr, status, error){
-				if (status == 'timeout' || xhr.status == 503) {
-					console.log(xhr.status);
-	            this.tryCount++;
-	            if (this.tryCount <= this.retryLimit) {
-	                //try again
-	                $.ajax(this);
-	                return;
-	            }         
-	            return;
-	        	}
-			}			
-	});
+          // clear rudund
+          $('#reader').append("<span class='icones icon-close'></span>");
+
+          decreptedText = Base64.btou(RawDeflate.inflate(Base64.fromBase64(decreptedText))).replace(/<\/?\w+[^>]*\/?>/g, "");
+          decreptedText = decreptedText.replace(/[<>]/g, '#').replace(/[\\]/g, "");
+          decreptedText = decreptedText.split("\n").filter(c => c.trim() != '');
+
+          var menu = [];
+          $.each(decreptedText, function(k, line){
+            if(k==0 && !line.match(/ *\d+/gi,'')){
+              finalText+='';
+            }else if(k==0 && line.match(/ *\d+/gi) && !line.match(/chapter*\b/gi)){
+              var title = line.toLowerCase().replace(/[&\/\\#+!$~%."*?<>{}]/g, '').trim(),
+                  num   = line.match(/ *\d+/gi)[0];
+              title = title.replace(/\d+/,'');
+              title = "Chapter "+num+": " +title;
+              finalText+= "<h3 id='to_"+k+"'>"+title+"</h3>";
+              var dta = {title:title,id:k};
+              menu.push(dta);
+            }else if(line.match(/ *\d+/gi) && !line.match(/chapter*\b/gi) && decreptedText[k+1] != undefined && decreptedText[k+1].match(/ranslator:|ranslated by*\b/gi)){
+              var title = line.toLowerCase().replace(/[&\/\\#+!$~%."*?<>{}]/g, '').trim(),
+                  num   = line.match(/ *\d+/gi)[0];
+
+              title = title.replace(/\d+/,'');
+
+              title = "Chapter "+num+": " +title;
+              finalText+= "<h3 id='to_"+k+"'>"+title+"</h3>";
+              var dta = {title:title,id:k};
+              menu.push(dta);
+            }else{
+              if(line.match(/chapter*\b/gi) && line.match(/ *\d+/gi) && line.length<90){
+                
+                var chaps = line.match(/chapter*\b/gi);
+
+                if(chaps.length>1){
+                  var chap = chaps[1];
+                  line = line.substring(line.lastIndexOf(chap));
+                }
+
+                line = line.replace(/[&\/\\#+$~%"*<>{}]/g, '');
+
+                var dTo  = line.toLowerCase().replace(/[&\/\\#()+'’–!$~%. "*:?<>{}-\d]/gi, '').substring(0,15),
+                    dTT  = decreptedText[k+2].toLowerCase().replace(/[&\/\\#()+'’–!$~%. "*:?<>{}-\d]/gi, '').substring(0,15);
+                // decreptedText[k+2] tl&ed same line
+                // decreptedText[k+4] tl&ed in separate line
+                if(dTo==dTT || line==decreptedText[k+1] || line==decreptedText[k+4]){
+                  finalText+='';
+                }else{
+                  finalText+="<h3 id='to_"+k+"'>"+line+"</h3>";
+                  var dta = {title:line,id:k};
+                  menu.push(dta);
+                }
+                               
+              }else if(line.match(/ranslator:|ranslated by*\b/gi) || line.match(/ditor:|dited by*\b/gi)){
+                finalText+='';
+              }else{
+                finalText+="<p>"+line+"</p>";}
+              }
+          });
+    
+          readerTxt.append("<h2>"+ttl+"</h2>");
+
+          if(menu.length>1){
+
+            readerTxt.append("<span class='icones  icon-th-menu'></span><ul><li><a>Table of Contents:</a></li></ul>");
+            $.each(menu, function(i, chap){
+              readerTxt.children('ul').append("<li><a href='#to_"+chap.id+"'><h4><span>"+(i+1)+"</span>"+chap.title+"</h4></a></li>");
+            });
+          }
+
+          readerTxt.append(finalText);
+
+          $('body,html').animate({scrollTop:0},300);
+          $('#reader').show();
+          $('#wrap').hide();
+
+          $('span.icon-th-menu').on('click', function(){
+            $('#reader ul').slideToggle(150);
+          });
+
+          $('#reader a[href]').on('click', function(e){
+            var id = $(this).attr('href');
+            id = $(id);
+            $('body,html').animate({scrollTop:id.offset().top},300);
+            e.preventDefault();
+          });
+          
+          $('#reader .icon-close').on('click', function(){
+            var redearScroll = localStorage.getItem("redearScroll");
+            $('#reader').hide();
+            $('body,html').animate({scrollTop:redearScroll},300);
+            $('#wrap').show();
+            $(this).remove();
+            readerTxt.empty();
+          });
+        }
+
+      },
+      beforeSend: function(jqXHR, settings){
+        console.log('loading'+ ' / url: '+settings.url);
+      },
+      complete: function(){
+        console.log('complete reader');
+        $('img#load').remove();
+      },
+      error: function(xhr, status, error){
+        if (status == 'timeout' || xhr.status == 503) {
+          console.log(xhr.status);
+              this.tryCount++;
+              if (this.tryCount <= this.retryLimit) {
+                  //try again
+                  $.ajax(this);
+                  return;
+              }         
+              return;
+        }
+      }     
+  });
 };
