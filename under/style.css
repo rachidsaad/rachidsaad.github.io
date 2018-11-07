@@ -182,7 +182,7 @@ body{
   margin:auto;
   color: #474747;
   background: #fbfbfb;
-  min-width: 340px;
+  min-width: 300px;
 }
 #wrap{
   margin: auto 50px;
@@ -405,7 +405,7 @@ span.globoscorescore {
   z-index: 3;
   width: 100%;
   display: none;
-  min-width: 360px;
+  min-width: 300px;
 }
 .text{
   width: 960px;
@@ -785,4 +785,16 @@ span.numbers.night{
   .text h3{font-size: 1em;}
   .text h2,.text h3{padding: 0;}
   #reader p{font-size: 0.9em;}
+}
+@media only screen and (max-width: 360px){
+  .updates li{padding: 5px}
+  .updates h1{font-size: 1.2em;}
+  .updates h2{font-size: 1em;}
+  .updates a h3{font-size: 0.9em; margin: 1px 0;}
+  .updates a span.icones{font-size: .8em; padding-right: 5px;}
+  p#date{font-size: 0.4em; border: none;}
+  #novelinfo ul li p {line-height: 1.2em; font-size: 0.9em;}
+  img#cover{width: 100px; border: 1px solid #ccc;}
+  img#spin, span.icones.icon-close{width: 34px;}
+  span.icones.icon-close {line-height: 32px; font-size: 0.8em;}
 }
