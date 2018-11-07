@@ -278,7 +278,7 @@ $.ajax({
     },
     complete: function(){
       console.log('complete '+ divID );
-      // $("#"+divID + ' img#spin').remove();
+      $("#"+divID + ' img#spin').remove();
     },
     error: function(xhr, status, error){
       if (status == 'timeout' || xhr.status == 503) {

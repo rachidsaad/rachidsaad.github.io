@@ -99,12 +99,12 @@ input::placeholder{
 .icon-flag2:before {content: "\e90e";}
 .icon-gift:before {content: "\e90f";}
 .icon-moon:before {content: "\e914";}
+.icon-x-square:before {content: "\e923";}
 .icon-plus-square:before {content: "\e917";}
 .icon-rotate-cw:before {content: "\e919";}
 .icon-search2:before {content: "\e91a";}
 .icon-close:before {content: "\e5cd";}
 .icon-sun:before {content: "\e91c";}
-.icon-x-square:before {content: "\e923";}
 .icon-chevron-thin-up:before {content: "\e912";}
 .icon-indent-decrease:before {content: "\e916";}
 .icon-indent-increase:before {content: "\e920";}
@@ -167,7 +167,7 @@ span.icones.icon-close {
 span#showBar {
   position: fixed;
   bottom: 0;
-  right: 0;
+  left: 0;
   padding: 10px 6px 5px 10px;
   z-index: 2;
   cursor: pointer;
@@ -182,6 +182,7 @@ body{
   margin:auto;
   color: #474747;
   background: #fbfbfb;
+  min-width: 360px;
 }
 #wrap{
   margin: auto 50px;
@@ -201,8 +202,9 @@ body{
 #search_results{
   display: none;
 }
-.updates li:first-child, #updates li:first-child {
+.updates li:first-child {
   border-top: 1px solid #e4e4e4;
+  padding-right: 30px;
 }
 /*Nest < end >*/
 
@@ -213,7 +215,6 @@ body{
   max-width: 1000px;
   width: 100%;
   overflow: hidden;
-  display: none;
 }
 #switsh ul {
   margin: auto 50px;
@@ -244,18 +245,14 @@ span#search{
 }
 header{
   margin: 20px auto;
-  height: 60px;
   position: relative;
   display: flex;
 }
 header a{
-  height: 100%;
-  /*display: block; for mobile*/
-  display: inline-block;
+  padding: 14px 3px;
   text-align: center;
-  line-height: 60px;
-  background: #fbfbfb;
   border: 1px solid #e4e4e4;
+  position: relative;
 }
 header h1 {
   font-size: 1.6em;
@@ -266,17 +263,15 @@ header h1 {
   padding: 0 20px;
 }
 header a img {
-  width: 60px;
+  width: 58px;
   position: absolute;
   top: 0;
   left: 0;
-  border: 1px solid #e4e4e4;
+  border-right: 1px solid #e4e4e4;
 }
 header p{
   display: inline-block;
-  height: 60px;
-  padding: 0 15px;
-  line-height: 60px;
+  padding: 18px 0px;
   font-size: 1.1em;
   border: 1px dashed #e4e4e4;
   text-transform: uppercase;
@@ -333,7 +328,7 @@ img#spin {
   width: 50px;
   border-right: 1px solid #e5e5e5;
   border-left: 1px solid #e5e5e5;
-  background: #9E9E9E;
+  background: #f6f6f6;
 }
 img#load{
   width: 16px;
@@ -379,7 +374,7 @@ p#date {
 span.read{
   margin-left: 10px;
 }
-span.bookups, span.read, span.error {
+span.bookups, span.read, span.error, span.icones.icon-th-menu {
   float: right;
   font-size: 1.1em;
 }
@@ -410,9 +405,10 @@ span.globoscorescore {
   z-index: 3;
   width: 100%;
   display: none;
+  min-width: 360px;
 }
 .text{
-  width: 1000px;
+  width: 960px;
   margin: auto;
   padding: 30px 25px;
   font-size: 1.2em;
@@ -452,7 +448,6 @@ span.globoscorescore {
 }
 span.icones.icon-th-menu {
   float: right;
-  font-size: 1.2em;
 }
 .text h3 {
   background: #f6f6f6;
@@ -480,6 +475,7 @@ span.icones.icon-th-menu {
 span.noveldata {
   float: left;
   padding: 5px;
+  width: 70%;
 }
 li#showsynop, li#showtoc, li#loadnext{
   cursor: pointer;
@@ -497,7 +493,8 @@ img#cover {
   outline: 5px solid #cccccc;
   outline-offset: -12px;
   float: right;
-  margin: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
 }
 li#toc{
   padding: 0;
@@ -623,7 +620,9 @@ input#textfield.night,
 #reader span.icon-close.night,
 #updates.night ol#tocorder li:first-child,
 #updates.night span.icon-rotate-cw[data-action]:after,
-.updates.night p#date{
+.updates.night p#date,
+#updates.night ol#tocorder li:nth-child(2n+1),
+#novelinfo.night ol#tocorder li:nth-child(2n){
   color: #717d8b;
   background: #1c2939;
   border-color: #28374a;
@@ -700,3 +699,90 @@ span.numbers.night{
   border-top: 1px solid #848484;
 }*/
 /*night mode <end>*/
+
+@media only screen and (max-width: 960px) {
+  .text {width: initial;}
+}
+@media only screen and (max-width: 900px) {
+  header p {
+    font-size: 1em;
+    letter-spacing: initial;
+  }
+  .updates h1{
+    white-space: nowrap;
+  }
+}
+@media only screen and (max-width: 780px) {
+  ol#tocorder li{width: 100%; font-size: 0.9em;}
+  #updates ol#tocorder li:nth-child(2n+1), #novelinfo ol#tocorder li:nth-child(2n){
+    border-left: 1px solid #e4e4e4;
+  }
+  img#cover{
+    outline: none;
+    width: 150px;
+  }
+  header {
+    display: block;
+    margin: 10px auto;
+  }
+  header a{
+    display: block;
+  }
+  header p{
+    padding: 0;
+    border: none;
+    margin: 0;
+    display: block;
+    margin-top: 11px;
+    font-size: 0.9em;
+  }
+}
+@media only screen and (max-width: 700px) {
+  span.noveldata{width: 60%;}
+  header p{
+    font-size: .8em;
+  }
+  .text {padding: 20px 15px;}
+  #reader ul li a{font-size: .9em; padding: 0;}
+}
+@media only screen and (max-width: 600px) {
+  #wrap{
+    margin: auto;
+  }
+  img#cover{
+    position: absolute; right: 5px;
+    width: 120px;
+    border: 3px solid #ccc;
+    border-radius: 3px;
+  }
+  span.noveldata{width: 100%}
+  .text h2{font-size: 1.2em;}
+  .text h3{font-size: 1.1em;}
+  .text h2,.text h3{padding: 5px;}
+}
+@media only screen and (max-width: 500px) {
+  .updates li{padding: 6px}
+  .updates h1{font-size: 1.3em;}
+  .updates h2{font-size: 1.1em;}
+  .updates a h3{font-size: 1em; margin: 2px 0;}
+  .updates a span.icones{font-size: .8em; padding-right: 5px;}
+  span.bookups, span.read, span.error, span.icones.icon-th-menu{font-size: 1em; margin-left: 5px;}
+  span.numbers{transform: scale(1.5); bottom: 20px;}
+  p#date{font-size: 0.5em;}
+  span.icon-rotate-cw[data-action]:after{padding: 5px 2px;}
+  span#date, .noveldata span[data-link] span{font-size: 0.5em;}
+  #switsh ul{margin: auto;}
+  span#showBar{bottom: 30px}
+  #search_results span.numbers {bottom: 12px; transform: scale(1); right: 6px;}
+  .text {padding: 5px;}
+  #reader p{padding: 5px 3px;}
+  img#spin, span.icones.icon-close{width: 38px;}
+  span.icones.icon-close{line-height: 36px; font-size: 0.9em;}
+  .updates.night img#cover{outline: none; border: 3px solid #101821;}
+}
+@media only screen and (max-width: 400px){
+  .text h2{font-size: 1.1em;}
+  .text h3{font-size: 1em;}
+  .text h2,.text h3{padding: 0;}
+  #reader p{font-size: 0.9em;}
+}

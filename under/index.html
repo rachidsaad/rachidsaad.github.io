@@ -18,7 +18,7 @@
 
 </head>
 <body>
-	<span id='showBar' class="icones  icon-plus-square"></span>
+	<span id='showBar' class="icones  icon-x-square"></span>
 	<div id="switsh">
 		<ul>
 			<li class='icones icon-moon'></li>
@@ -93,7 +93,7 @@
 		$(document).ready(function(){
 			var updates = 'updates';
 			var url  = 'https://www.reddit.com/r/QidianUnderground/new.json?',
-				limit = 10;
+				limit = 100;
 
 			getData('',url,limit,updates);
 			
@@ -191,7 +191,7 @@
 
 			$('#showBar').on('click', function(){
 				$('#switsh').toggle();
-				$(this).toggleClass('icon-x-square');
+				$(this).toggleClass('icon-plus-square');
 			});
 
 			$(window).on('scroll',function(){
