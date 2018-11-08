@@ -36,7 +36,7 @@
 
 		<header>
 			<a href="index.html"><img src="img/lmp.png" alt=""><h1>UndeRGrounD</h1></a>
-			<p>A greedy father has thieves for children.</p>
+			<p>A greedy father has thieves for children</p>
 		</header>
 
 		<div id="main">
@@ -82,10 +82,8 @@
 	</div>
 
 	<div id="reader">
-
-		<!-- <span class="icones icon-close"></span> -->
 		<div class="text"></div>
-
+		<span class='icones icon-chevron-thin-up' id='redertop'></span>
 	</div>
 
 	<script src="main.js"></script>
@@ -170,32 +168,43 @@
 				}
 			});
 
-			$('#switsh ul li').on('click', function(){
-				if($(this).hasClass('icon-moon')){
-					$('body,#updates, #switsh ul, header a, header a img, header p, #reader span.icon-close,.updates, span.numbers, #reader, .text, input#textfield').addClass('night');
-					$('header img').attr('src','img/nmp.png');
-					$(".icon-sun").css('display','inline-block');
-					$(this).hide();
-					
-				}else if($(this).hasClass('icon-sun')){
-					$('body,#updates, #switsh ul, header a, header a img, header p, #reader span.icon-close,.updates, span.numbers, #reader, .text, input#textfield').removeClass('night');
-					$('header img').attr('src','img/lmp.png');
-					$(".icon-moon").show();
-					$(this).hide();
-
-				}else if($(this).hasClass('icon-chevron-thin-up')){
-					$('body,html').animate({scrollTop:0},300);
-				}
-
+			$('.icon-moon').on('click', function(){
+				$('body,#updates, #switsh ul, header a, header a img, header p, #reader span.icon-close,.updates, span.numbers, #reader, .text, input#textfield').addClass('night');
+				$('header img').attr('src','img/nmp.png');
+				$(".icon-sun").css('display','inline-block');
+				$(this).hide();
 			});
+			$('.icon-sun').on('click', function(){
+				$('body,#updates, #switsh ul, header a, header a img, header p, #reader span.icon-close,.updates, span.numbers, #reader, .text, input#textfield').removeClass('night');
+				$('header img').attr('src','img/lmp.png');
+				$(".icon-moon").show();
+				$(this).hide();
+			});
+
+			// $('#switsh ul li').on('click', function(){
+			// 	if($(this).hasClass('icon-moon')){
+			// 		$('body,#updates, #switsh ul, header a, header a img, header p, #reader span.icon-close,.updates, span.numbers, #reader, .text, input#textfield').addClass('night');
+			// 		$('header img').attr('src','img/nmp.png');
+			// 		$(".icon-sun").css('display','inline-block');
+			// 		$(this).hide();
+					
+			// 	}else if($(this).hasClass('icon-sun')){
+			// 		$('body,#updates, #switsh ul, header a, header a img, header p, #reader span.icon-close,.updates, span.numbers, #reader, .text, input#textfield').removeClass('night');
+			// 		$('header img').attr('src','img/lmp.png');
+			// 		$(".icon-moon").show();
+			// 		$(this).hide();
+			// 	}
+			// });
 
 			$('#showBar').on('click', function(){
 				$('#switsh').toggle();
 				$(this).toggleClass('icon-plus-square');
 			});
-
+			$('#top,#redertop').on('click', function(){
+				$('body,html').animate({scrollTop:0},300);
+			});
 			$(window).on('scroll',function(){
-				$(window).scrollTop()>=400?$('#top').css('display','initial'):$('#top').hide();
+				$(window).scrollTop()>=400?$('#top,#redertop').css('display','initial'):$('#top,#redertop').hide();
 			});
 		});
 	</script>

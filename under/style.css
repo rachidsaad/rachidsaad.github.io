@@ -156,13 +156,26 @@ span.icones.icon-close {
   line-height: 46px;
   cursor: pointer;
   background: #f9f9f9;
+  transition: background .2s;
 }
-#reader span.icon-close{
+#reader span.icon-close, #reader span.icon-chevron-thin-up {
   position: fixed;
   height: auto;
   width: auto;
   border: none;
   line-height: initial;
+  padding: 2px 3px;
+  background: #17526d;
+  color: #fbfbfb;
+  cursor: pointer;
+}
+#reader span.icon-chevron-thin-up {
+  right: 0;
+  top: 25px;
+  display: none;
+}
+span#redertop{
+  display: none;
 }
 span#showBar {
   position: fixed;
@@ -449,6 +462,9 @@ span.globoscorescore {
 span.icones.icon-th-menu {
   float: right;
 }
+#reader span.icones.icon-th-menu{
+  margin-right: 25px;
+}
 .text h3 {
   background: #f6f6f6;
   border-top: 1px solid #e5e5e5;
@@ -585,14 +601,12 @@ span#date, .noveldata span[data-link] span {
 /*Gnr style < end >*/
 
 /*Hover <start>*/
-.updates li:hover p#date{
-  background: #2eabe5;
-  color: #fff;
-  border-color: #2eabe5;
-}
 .updates li:hover span.bookups, .updates li:hover span.read{
   opacity: 1;
   color: #2eabe5;
+}
+ol#tocorder li:hover h4, #reader ul li a:hover h4 {
+    font-weight: bold;
 }
 .updates a:hover{
   color: #2eabe5;
@@ -601,7 +615,36 @@ span#date, .noveldata span[data-link] span {
   color: #2eabe5;
   opacity: 1;
 }
+span.icones.icon-close:hover, .updates.night span.icones.icon-close:hover {
+    background: #2eabe5;
+    color: #fbfbfb;
+}
+span.icones.icon-close:active, .updates.night span.icones.icon-close:active {
+    background: #1880b1;
+}
 
+.icon-rotate-cw,
+.icon-search2,
+.icon-search2 .icon-close,
+.icon-moon,
+span#showBar,
+.icon-sun{
+  transition: .2s;
+}
+
+.icon-rotate-cw:hover,
+.icon-search2:hover,
+.icon-search2 .icon-close:hover,
+.icon-moon:hover,
+span#showBar:hover{
+  color: #2eabe5;
+}
+.icon-sun:hover{
+  color: #FFC107;
+}
+li#loadnext:hover, .updates.night li#loadnext:hover{
+  color: #2eabe5;
+}
 /*Hover < end >*/
 
 /*night mode <start>*/
@@ -749,6 +792,9 @@ span.numbers.night{
   #wrap{
     margin: auto;
   }
+  #switsh ul{margin: auto; padding: 10px 5px 7px;}
+  span#showBar{bottom: 30px}
+  input#textfield{width: 180px;}
   img#cover{
     position: absolute; right: 5px;
     width: 120px;
@@ -761,7 +807,7 @@ span.numbers.night{
   .text h2,.text h3{padding: 5px;}
 }
 @media only screen and (max-width: 500px) {
-  .updates li{padding: 6px}
+  .updates li{padding: 8px 6px;}
   .updates h1{font-size: 1.3em;}
   .updates h2{font-size: 1.1em;}
   .updates a h3{font-size: 1em; margin: 2px 0;}
@@ -771,8 +817,6 @@ span.numbers.night{
   p#date{font-size: 0.5em;}
   span.icon-rotate-cw[data-action]:after{padding: 5px 2px;}
   span#date, .noveldata span[data-link] span{font-size: 0.5em;}
-  #switsh ul{margin: auto;}
-  span#showBar{bottom: 30px}
   #search_results span.numbers {bottom: 12px; transform: scale(1); right: 6px;}
   .text {padding: 5px;}
   #reader p{padding: 5px 3px;}
@@ -787,7 +831,6 @@ span.numbers.night{
   #reader p{font-size: 0.9em;}
 }
 @media only screen and (max-width: 360px){
-  .updates li{padding: 5px}
   .updates h1{font-size: 1.2em;}
   .updates h2{font-size: 1em;}
   .updates a h3{font-size: 0.9em; margin: 1px 0;}
@@ -795,6 +838,4 @@ span.numbers.night{
   p#date{font-size: 0.4em; border: none;}
   #novelinfo ul li p {line-height: 1.2em; font-size: 0.9em;}
   img#cover{width: 100px; border: 1px solid #ccc;}
-  img#spin, span.icones.icon-close{width: 34px;}
-  span.icones.icon-close {line-height: 32px; font-size: 0.8em;}
 }

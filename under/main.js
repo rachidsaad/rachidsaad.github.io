@@ -71,7 +71,7 @@ function getData(query,link,limit,divID){
 
   $('#'+divID+ ' ul li:eq(0)').append("<img id='spin' src='imgs/spin.gif' alt='spinner'>");
   var updates = $("#"+divID);
-  clenQ = query.replace(/the /i,'');
+  clenQ = query.replace(/the /gi,'');
 $.ajax({
     method: 'GET',
     data:{
@@ -87,8 +87,6 @@ $.ajax({
     retryLimit: 2,
     index: 1,
     success: function(redditData){
-      // console.log(redditData.data.children[0].data.name);
-      // console.log(redditData.data.children[limit-1].data.name);
       if(!$.trim(redditData.data.children)){
         $('#'+divID + ' ul').append('<li><h2>No results matching your search.</h2></li>');
         $('#textfield').val('');
@@ -109,7 +107,7 @@ $.ajax({
         if(!self && thumbnail_height == null){
 
           var book = bookAndChap.replace(/ *\{[^)]*\} */g, "");
-          book = book.replace(/ \- |\- | \-/gi,' ').replace(/[&\/\\#+()!$~%."*?<>]/g, '');
+          book = book.replace(/ \- |\- | \-/gi,' ').replace(/[&\/\\#+()!$~%."*?<>]/g, '').replace(/’/gi,'\'');
 
           if(book.match(/:/gi)!=null && book.length>10){
             var dpoin = book.match(/:/gi)[0];
@@ -125,6 +123,9 @@ $.ajax({
           
           if(book.match(/chapter.*\b/gi) != null){
             book=book.replace(/chapter.*\b/gi,'').trim();
+          }
+          if(book.match(/ ch *\b/gi) != null){
+            book=book.replace(/ ch*\b/gi,'').trim();
           }
 
           var bookComp = book.toLowerCase().replace(/the /gi,'').trim();
@@ -332,7 +333,7 @@ function toc(momy,query,limit,divID){
           if(!self){
 
             var book = bookAndChap.replace(/ *\{[^)]*\} */g, "");
-            book = book.replace(/ \- |\- | \-/gi,' ').replace(/[&\/\\#+()!$~%."*?<>]/g, '');
+            book = book.replace(/ \- |\- | \-/gi,' ').replace(/[&\/\\#+()!$~%."*?<>]/g, '').replace(/’/gi,'\'');
 
             if(book.match(/:/gi)!=null && book.length>10){
             var dpoin = book.match(/:/gi)[0];
@@ -346,12 +347,15 @@ function toc(momy,query,limit,divID){
               book = book.substring(0,book.indexOf(num));
             }
 
-            if(book.match(/chapter*\b/gi) != null){
+            if(book.match(/chapter.*\b/gi) != null){
               book=book.replace(/chapter.*\b/gi,'').trim();
+            }
+            if(book.match(/ ch *\b/gi) != null){
+              book=book.replace(/ ch*\b/gi,'').trim();
             }
 
             var bookComp = book.toLowerCase().replace(/the /gi,'').trim();
-            bookComp = bookComp.replace(/'s |’s |i'm |i’m /gi,' ');
+            bookComp = bookComp.replace(/'s |i'm /gi,' ');
             bookComp = bookComp.replace(/ +/g, "").substring(0,10);
 
             var chapter = bookAndChap.match(/\d+/gi);
@@ -372,11 +376,10 @@ function toc(momy,query,limit,divID){
                 chapter = chapter[0];
               }
             }else(chapter = 'XXX');
-
             if(bookComp.length>=7 && chapter !== "XXX"){
               if(divID!=="search_results"){
                 var queryFilter = query.toLowerCase().replace(/the /gi,'').trim();
-                queryFilter = queryFilter.replace(/'s |’s |i'm |i’m /gi,' ');
+                queryFilter = queryFilter.replace(/'s |i'm /gi,' ');
                 queryFilter = queryFilter.replace(/ +/g, "").substring(0,10);
                 if(bookComp == queryFilter){
                   var bookAndChap = book+" - "+chapter,
@@ -510,7 +513,7 @@ function tocMore(query,limit){
           if(!self){
 
             var book = bookAndChap.replace(/ *\{[^)]*\} */g, "");
-            book = book.replace(/ \- |\- | \-/gi,' ').replace(/[&\/\\#+()!$~%."*?<>]/g, '');
+            book = book.replace(/ \- |\- | \-/gi,' ').replace(/[&\/\\#+()!$~%."*?<>]/g, '').replace(/’/gi,'\'');
 
             if(book.match(/:/gi)!=null && book.length>10){
             var dpoin = book.match(/:/gi)[0];
@@ -524,11 +527,15 @@ function tocMore(query,limit){
               book = book.substring(0,book.indexOf(num));
             }
 
-            if(book.match(/chapter*\b/gi) != null){
+            if(book.match(/chapter.*\b/gi) != null){
               book=book.replace(/chapter.*\b/gi,'').trim();
             }
+            if(book.match(/ ch *\b/gi) != null){
+              book=book.replace(/ ch*\b/gi,'').trim();
+            }
+
             var bookComp = book.toLowerCase().replace(/the /gi,'').trim();
-            bookComp = bookComp.replace(/'s |’s |i'm |i’m /gi,' ');
+            bookComp = bookComp.replace(/'s |i'm /gi,' ');
             bookComp = bookComp.replace(/ +/g, "").substring(0,10);
 
             var chapter = bookAndChap.match(/\d+/gi);
@@ -552,7 +559,7 @@ function tocMore(query,limit){
 
             if(bookComp.length>=7 && chapter !== "XXX"){
                 var queryFilter = query.toLowerCase().replace(/the /gi,'').trim();
-                queryFilter = queryFilter.replace(/'s |’s |i'm |i’m /gi,' ');
+                queryFilter = queryFilter.replace(/'s |i'm /gi,' ');
                 queryFilter = queryFilter.replace(/ +/g, "").substring(0,10);
                 if(bookComp == queryFilter){
                   var bookAndChap = book+" - "+chapter,
@@ -634,8 +641,8 @@ $.ajax({
       }else{
         var Books       = [],
             selectedNovel = title;
+        selectedNovel = selectedNovel.replace(/’/gi,'\'');
         $(infoDiv+ 'img#spin').show();
-        $(infoDiv+ ' ul li:eq(0)').append("<h1>"+selectedNovel+"</h1>");
 
         localStorage.setItem("clickedTit",name);
         var itt = false;
@@ -654,6 +661,7 @@ $.ajax({
               paraSynop+="<p>"+line+"</p>";
             });
             itt = true;
+            $(infoDiv+' ul li:eq(0)').append("<h1>"+novel.title+"</h1>");
             $(infoDiv+' ul').append("<li><span class='noveldata'><p><b class='icones icon-edit-3'>Author:</b></br> "
               +novel.author+
               "</p><p><b class='icones icon-translate'>Type:</b></br> "
@@ -667,11 +675,12 @@ $.ajax({
               "' id='cover'></li>");
             $(infoDiv+' ul').append("<li id='showsynop' class=''><b class='icones icon-subject'>Synopsis</b></li><li id='synop'>"+paraSynop+"</li><li id='showtoc' class=''><b class='icones icon-th-menu'>Table of Contents:</b></li>");
             var momy = $('li#showtoc');
-            selectedNovel = selectedNovel.replace(/'s |’s |i'm |i’m /gi,' ');
+            selectedNovel = selectedNovel.replace(/'s |i'm /gi,' ');
             toc(momy,selectedNovel,30,'novelinfo');
           }
         });
         if(itt==false){
+          $(infoDiv+' ul li:eq(0)').append("<h1>"+selectedNovel+"</h1>");
           $(infoDiv+' ul').append("<li><h2>Coming soon</h2></li>");
           $(infoDiv + ' img#spin').remove();
         }
