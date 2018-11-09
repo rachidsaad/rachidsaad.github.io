@@ -169,13 +169,13 @@
 			});
 
 			$('.icon-moon').on('click', function(){
-				$('body,#updates, #switsh ul, header a, header a img, header p, #reader span.icon-close,.updates, span.numbers, #reader, .text, input#textfield').addClass('night');
+				$('body,#updates, #switsh ul, header, #reader span.icon-close,.updates, span.numbers, #reader, .text, input#textfield').addClass('night');
 				$('header img').attr('src','img/nmp.png');
 				$(".icon-sun").css('display','inline-block');
 				$(this).hide();
 			});
 			$('.icon-sun').on('click', function(){
-				$('body,#updates, #switsh ul, header a, header a img, header p, #reader span.icon-close,.updates, span.numbers, #reader, .text, input#textfield').removeClass('night');
+				$('body,#updates, #switsh ul, header, #reader span.icon-close,.updates, span.numbers, #reader, .text, input#textfield').removeClass('night');
 				$('header img').attr('src','img/lmp.png');
 				$(".icon-moon").show();
 				$(this).hide();

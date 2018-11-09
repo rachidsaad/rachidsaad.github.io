@@ -119,31 +119,13 @@ input::placeholder{
   font-size: .9em;
 }
 .icon-rotate-cw:before { 
+  transition: transform .3s;
   margin-right: 5px;
 }
 .icon-search2{
   float: right;
 }
-span.icon-rotate-cw[data-action]:after{
-  z-index: -20;
-  opacity: 0;
-  content: attr(data-action);
-  position: absolute;
-  font-size: 0.6em;
-  font-weight: bold;
-  background: #fff;
-  padding: 5px 4px;
-  border: 1px solid #c5c5c5;
-  border-radius: 2px;
-  transition: opacity .3s;
-}
-span.icon-rotate-cw[data-action]:hover:after{
-  z-index: 20;
-  opacity: 1;
-}
-.icon-rotate-cw:hover:before{
-  opacity: 1;
-}
+
 span.icones.icon-close {
   position: absolute;
   right: 0;
@@ -178,32 +160,28 @@ span#redertop{
   display: none;
 }
 span#showBar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  padding: 10px 6px 5px 10px;
-  z-index: 2;
-  cursor: pointer;
-  font-size: 1.1em;
+    position: fixed;
+    bottom: -2px;
+    left: 50%;
+    padding: 10px 6px 5px 10px;
+    z-index: 2;
+    cursor: pointer;
+    font-size: 1.2em;
 }
 /* Icones < end >*/
 
 /*Gnr style <start>*/
 body{
   font-family: sans-serif,helvetica;
-  max-width: 1000px;
   margin:auto;
   color: #474747;
   background: #fbfbfb;
   min-width: 300px;
 }
-#wrap{
-  margin: auto 50px;
-  overflow: hidden;
-}
 #main{
   margin: auto;
   overflow: hidden;
+  max-width: 960px;
 }
 #side{
   display: inline-block;
@@ -216,7 +194,6 @@ body{
   display: none;
 }
 .updates li:first-child {
-  border-top: 1px solid #e4e4e4;
   padding-right: 30px;
 }
 /*Nest < end >*/
@@ -225,12 +202,12 @@ body{
   position: fixed;
   bottom: 0;
   z-index: 1;
-  max-width: 1000px;
   width: 100%;
   overflow: hidden;
 }
 #switsh ul {
-  margin: auto 50px;
+  max-width: 960px;
+  margin: auto;
   background: #fbfbfb;
   border: 1px solid #e5e5e5;
   border-bottom: none;
@@ -256,49 +233,37 @@ input#textfield {
 span#search{
   float: right;
 }
-header{
-  margin: 20px auto;
-  position: relative;
-  display: flex;
+header {
+    padding: 50px 0px;
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
+    background: url("imgs/whitediamond.png") 50% 0;
 }
-header a{
-  padding: 14px 3px;
-  text-align: center;
-  border: 1px solid #e4e4e4;
-  position: relative;
+header a {
+    display: inline-block;
+    border: 1px solid #000;
+    padding: 4px 12px;
+    border-radius: 5px;
+    background: #fbfbfb;
+}
+header img {
+    width: 50px;
+    float: left;
 }
 header h1 {
-  font-size: 1.6em;
-  letter-spacing: -1px;
-  text-transform: lowercase;
-  font-weight: bold;
-  margin-left: 50px;
-  padding: 0 20px;
+    text-transform: lowercase;
+    float: right;
+    height: 50px;
+    line-height: 50px;
+    padding-right: 7px;
+    letter-spacing: -1px;
+    font-weight: bold;
+    font-size: 1.7em;
 }
-header a img {
-  width: 58px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-right: 1px solid #e4e4e4;
-}
-header p{
-  display: inline-block;
-  padding: 18px 0px;
-  font-size: 1.1em;
-  border: 1px dashed #e4e4e4;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-align: center;
-  flex: 1;
-  margin-left: 10px;
-}
-header input[type="text"] {
-  height: 100%;
-  margin-right: 10px;
-  padding: 15px;
-  float: left;
-  font-size: 1.5em;
+header p {
+    text-transform: capitalize;
+    margin-top: 5px;
+    font-size: .8em;
 }
 .updates {
   margin-bottom: 50px;
@@ -364,14 +329,12 @@ li.bestmatch a {
   padding-right: 10px;
 }
 span.numbers {
-  opacity: 0.2;
   font-weight: bold;
   letter-spacing: -1px;
   position: absolute;
   right: 15px;
   bottom: 25px;
   transform: scale(2.5);
-  color: #666666;
 }
 p#date {
   font-size: 0.6em;
@@ -603,24 +566,24 @@ span#date, .noveldata span[data-link] span {
 /*Hover <start>*/
 .updates li:hover span.bookups, .updates li:hover span.read{
   opacity: 1;
-  color: #2eabe5;
+  color: #01d6c0;
 }
 ol#tocorder li:hover h4, #reader ul li a:hover h4 {
     font-weight: bold;
 }
 .updates a:hover{
-  color: #2eabe5;
+  color: #01d6c0;
 }
 .updates li:hover .numbers{
-  color: #2eabe5;
+  color: #01d6c0;
   opacity: 1;
 }
 span.icones.icon-close:hover, .updates.night span.icones.icon-close:hover {
-    background: #2eabe5;
+    background: #01d6c0;
     color: #fbfbfb;
 }
 span.icones.icon-close:active, .updates.night span.icones.icon-close:active {
-    background: #1880b1;
+    background: #1dead5;
 }
 
 .icon-rotate-cw,
@@ -632,25 +595,35 @@ span#showBar,
   transition: .2s;
 }
 
-.icon-rotate-cw:hover,
+.icon-rotate-cw:hover:before {
+    transform: rotate(360deg);
+    display: inline-block;
+}
+#updates li:first-child:hover .icon-rotate-cw{
+  color: #01d6c0;
+}
 .icon-search2:hover,
 .icon-search2 .icon-close:hover,
 .icon-moon:hover,
 span#showBar:hover{
-  color: #2eabe5;
+  color: #01d6c0;
 }
 .icon-sun:hover{
   color: #FFC107;
 }
-li#loadnext:hover, .updates.night li#loadnext:hover{
-  color: #2eabe5;
+li#loadnext:hover,
+ li#showsynop:hover,
+  li#showtoc:hover,
+   .updates.night li#loadnext:hover{
+  color: #01d6c0;
 }
 /*Hover < end >*/
 
 /*night mode <start>*/
 body.night,
-header a.night,
-header p.night,
+header.night,
+header.night a,
+header.night p,
 #switsh ul.night,
 input#textfield.night,
 #updates.updates.night li,
@@ -662,7 +635,6 @@ input#textfield.night,
 .text.night h3,
 #reader span.icon-close.night,
 #updates.night ol#tocorder li:first-child,
-#updates.night span.icon-rotate-cw[data-action]:after,
 .updates.night p#date,
 #updates.night ol#tocorder li:nth-child(2n+1),
 #novelinfo.night ol#tocorder li:nth-child(2n){
@@ -679,21 +651,21 @@ input#textfield.night,
 .updates.night span#num, .text.night h4 span{
   background: #253447;
   border: none;
-  color: #2eabe5;
+  color: #01d6c0;
 }
 .updates.night span.icones.icon-close,
 .updates.night img#spin{
   background: #213144;
-  color: #2eabe5;
+  color: #01d6c0;
   border-color: #28374a;
 }
 #reader.night ul li a,
 #reader.night ul li:first-of-type,
 .updates.night ol#tocorder li h4{
-  color: #2eabe5;
+  color: #01d6c0;
   border-color: #28374a;
 }
-header a.night, header a img.night{
+header.night a{
   border: 1px solid #28374a;
 }
 .updates.night a{
@@ -708,7 +680,7 @@ header a.night, header a img.night{
 .text.night h3 {
   background: #253447;
   border-color: #28374a;
-  color: #2eabe5;
+  color: #01d6c0;
 }
 input#textfield.night{
   border-bottom: 1px solid #364961;
@@ -722,7 +694,7 @@ input#textfield.night{
 }
 /*hover night mode >*/
 .updates.night a:hover{
-  color: #2eabe5;
+  color: #01d6c0;
 }
 span.numbers.night{
 }
@@ -747,10 +719,6 @@ span.numbers.night{
   .text {width: initial;}
 }
 @media only screen and (max-width: 900px) {
-  header p {
-    font-size: 1em;
-    letter-spacing: initial;
-  }
   .updates h1{
     white-space: nowrap;
   }
@@ -764,35 +732,14 @@ span.numbers.night{
     outline: none;
     width: 150px;
   }
-  header {
-    display: block;
-    margin: 10px auto;
-  }
-  header a{
-    display: block;
-  }
-  header p{
-    padding: 0;
-    border: none;
-    margin: 0;
-    display: block;
-    margin-top: 11px;
-    font-size: 0.9em;
-  }
 }
 @media only screen and (max-width: 700px) {
   span.noveldata{width: 60%;}
-  header p{
-    font-size: .8em;
-  }
   .text {padding: 20px 15px;}
   #reader ul li a{font-size: .9em; padding: 0;}
 }
 @media only screen and (max-width: 600px) {
-  #wrap{
-    margin: auto;
-  }
-  #switsh ul{margin: auto; padding: 10px 5px 7px;}
+  #switsh ul{padding: 10px 5px 7px;}
   span#showBar{bottom: 30px}
   input#textfield{width: 180px;}
   img#cover{
@@ -815,7 +762,6 @@ span.numbers.night{
   span.bookups, span.read, span.error, span.icones.icon-th-menu{font-size: 1em; margin-left: 5px;}
   span.numbers{transform: scale(1.5); bottom: 20px;}
   p#date{font-size: 0.5em;}
-  span.icon-rotate-cw[data-action]:after{padding: 5px 2px;}
   span#date, .noveldata span[data-link] span{font-size: 0.5em;}
   #search_results span.numbers {bottom: 12px; transform: scale(1); right: 6px;}
   .text {padding: 5px;}
