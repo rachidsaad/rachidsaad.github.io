@@ -75,7 +75,12 @@ input::placeholder{
   opacity: .7;
 }
 /* rev_Default < end >*/
-
+/*app def*/
+body{
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
 /* Icones <start>*/
 .icones:before{font-family: "icomoon"; cursor: pointer;}
 
@@ -132,8 +137,7 @@ span.icones.icon-close {
   top: 0;
   height: 100%;
   width: 50px;
-  border-right: 1px solid #e5e5e5;
-  border-left: 1px solid #e5e5e5;
+  border-left: 1px solid #e4e4e4;
   text-align: center;
   line-height: 46px;
   cursor: pointer;
@@ -159,15 +163,6 @@ span.icones.icon-close {
 span#redertop{
   display: none;
 }
-span#showBar {
-    position: fixed;
-    bottom: -2px;
-    left: 50%;
-    padding: 10px 6px 5px 10px;
-    z-index: 2;
-    cursor: pointer;
-    font-size: 1.2em;
-}
 /* Icones < end >*/
 
 /*Gnr style <start>*/
@@ -179,9 +174,12 @@ body{
   min-width: 300px;
 }
 #main{
-  margin: auto;
-  overflow: hidden;
-  max-width: 960px;
+    margin: -51px auto 33px;
+    overflow: hidden;
+    max-width: 960px;
+    border: 1px solid #e4e4e4;
+    border-bottom: none;
+    border-radius: 10px 10px 0px 0px;
 }
 #side{
   display: inline-block;
@@ -209,7 +207,7 @@ body{
   max-width: 960px;
   margin: auto;
   background: #fbfbfb;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #e4e4e4;
   border-bottom: none;
   border-radius: 5px 5px 0 0;
   padding: 10px 10px 5px;
@@ -234,22 +232,31 @@ span#search{
   float: right;
 }
 header {
-    padding: 50px 0px;
+    padding: 50px 0px 90px;
     text-align: center;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e4e4e4;
+    border-top: 1px solid #01d6c0;
     background: url("imgs/whitediamond.png") 50% 0;
 }
 header a {
-    display: inline-block;
-    border: 1px solid #000;
+    /*display: inline-block;
+    border: 1px solid #ececec;
     padding: 4px 12px;
     border-radius: 5px;
-    background: #fbfbfb;
+    background: #fbfbfb;*/
+    display: inline-block;
+    border: 2px solid #01d6c0;
+    border-radius: 5px;
+    padding: 8px;
 }
-header img {
-    width: 50px;
+svg#qu {
+    width: 40px;
     float: left;
 }
+/*header img {
+    width: 50px;
+    float: left;
+}*/
 header h1 {
     text-transform: lowercase;
     float: right;
@@ -263,10 +270,8 @@ header h1 {
 header p {
     text-transform: capitalize;
     margin-top: 5px;
-    font-size: .8em;
-}
-.updates {
-  margin-bottom: 50px;
+    font-size: 0.7em;
+    font-weight: bold;
 }
 .updates li {
   padding: 10px;
@@ -304,8 +309,7 @@ img#spin {
   top: 0;
   height: 100%;
   width: 50px;
-  border-right: 1px solid #e5e5e5;
-  border-left: 1px solid #e5e5e5;
+  border-left: 1px solid #e4e4e4;
   background: #f6f6f6;
 }
 img#load{
@@ -329,12 +333,14 @@ li.bestmatch a {
   padding-right: 10px;
 }
 span.numbers {
+  opacity: 0.2;
   font-weight: bold;
   letter-spacing: -1px;
   position: absolute;
   right: 15px;
   bottom: 25px;
   transform: scale(2.5);
+  color: #666666;
 }
 p#date {
   font-size: 0.6em;
@@ -344,7 +350,7 @@ p#date {
   padding: 2px 4px;
   text-transform: uppercase;
   font-weight: bold;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #e4e4e4;
   border-bottom: none;
 }
 span.read{
@@ -400,17 +406,17 @@ span.globoscorescore {
   display: block;
   padding: 5px;
   padding-left: 10px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e4e4e4;
 }
 #reader ul li:first-of-type{
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid #e4e4e4;
 }
 .text h4 span {
   padding: 5px 9px 5px 7px;
   margin-right: 10px;
   font-size: 0.6em;
   border-radius: 3px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #e4e4e4;
 }
 .text h2, .text h3, .text h4 {
   text-transform: capitalize;
@@ -430,8 +436,8 @@ span.icones.icon-th-menu {
 }
 .text h3 {
   background: #f6f6f6;
-  border-top: 1px solid #e5e5e5;
-  border-bottom: 1px solid #e5e5e5;
+  border-top: 1px solid #e4e4e4;
+  border-bottom: 1px solid #e4e4e4;
 }
 #reader p{
   padding: 7px 10px;
@@ -518,7 +524,7 @@ span#num {
   padding: 4px 0px;
   text-align: center;
   font-size: 0.8em;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #e4e4e4;
   border-radius: 3px;
 }
 span#date, .noveldata span[data-link] span {
@@ -541,7 +547,7 @@ span#date, .noveldata span[data-link] span {
   display: inline-block;
   background: #f9f9f9;
   padding: 3px 5px;
-  border: 1px solid #e5e5e5;
+  border: 1px solid #e4e4e4;
   border-radius: 2px;
 }
 .icon-translate:before,
@@ -578,11 +584,11 @@ ol#tocorder li:hover h4, #reader ul li a:hover h4 {
   color: #01d6c0;
   opacity: 1;
 }
-span.icones.icon-close:hover, .updates.night span.icones.icon-close:hover {
+span.icones.icon-close:hover, body.night .updates span.icones.icon-close:hover {
     background: #01d6c0;
     color: #fbfbfb;
 }
-span.icones.icon-close:active, .updates.night span.icones.icon-close:active {
+span.icones.icon-close:active, body.night .updates span.icones.icon-close:active {
     background: #1dead5;
 }
 
@@ -590,7 +596,6 @@ span.icones.icon-close:active, .updates.night span.icones.icon-close:active {
 .icon-search2,
 .icon-search2 .icon-close,
 .icon-moon,
-span#showBar,
 .icon-sun{
   transition: .2s;
 }
@@ -605,117 +610,99 @@ span#showBar,
 .icon-search2:hover,
 .icon-search2 .icon-close:hover,
 .icon-moon:hover,
-span#showBar:hover{
+.icon-chevron-thin-up:hover{
   color: #01d6c0;
 }
 .icon-sun:hover{
   color: #FFC107;
 }
 li#loadnext:hover,
- li#showsynop:hover,
-  li#showtoc:hover,
-   .updates.night li#loadnext:hover{
+li#showsynop:hover,
+li#showtoc:hover,
+body.night .updates li#loadnext:hover,
+body.night .updates li#showsynop:hover,
+body.night .updates li#showtoc:hover{
   color: #01d6c0;
 }
 /*Hover < end >*/
 
 /*night mode <start>*/
 body.night,
-header.night,
-header.night a,
-header.night p,
-#switsh ul.night,
-input#textfield.night,
-#updates.updates.night li,
-#search_results.updates.night li,
-#novellist.updates.night li,
-#novelinfo.updates.night li,
-#reader.night,
-.text.night,
-.text.night h3,
-#reader span.icon-close.night,
-#updates.night ol#tocorder li:first-child,
-.updates.night p#date,
-#updates.night ol#tocorder li:nth-child(2n+1),
-#novelinfo.night ol#tocorder li:nth-child(2n){
+body.night header,
+body.night header p,
+body.night #switsh ul,
+body.night #switsh ul input#textfield,
+body.night #main,
+body.night .updates li,
+body.night #reader,
+body.night #reader span.icon-close,
+body.night .text,
+body.night .text h3,
+body.night #updates ol#tocorder li:first-child,
+body.night .updates p#date,
+body.night #updates ol#tocorder li:nth-child(2n+1),
+body.night #novelinfo li,
+body.night #novelinfo ol#tocorder li:nth-child(2n),
+body.night ol#tocorder li{
   color: #717d8b;
   background: #1c2939;
   border-color: #28374a;
 }
-.updates.night span#date, .updates.night span[data-link] span{
+body.night .updates span#date, body.night .updates span[data-link] span{
   background: #253447;
   color: #717d8b;
   border: none;
   border-left: 2px solid #2e414c;
 }
-.updates.night span#num, .text.night h4 span{
+body.night .updates span#num, body.night .text h4 span{
   background: #253447;
   border: none;
   color: #01d6c0;
 }
-.updates.night span.icones.icon-close,
-.updates.night img#spin{
+body.night .updates span.icones.icon-close,
+body.night .updates img#spin{
   background: #213144;
   color: #01d6c0;
   border-color: #28374a;
 }
-#reader.night ul li a,
-#reader.night ul li:first-of-type,
-.updates.night ol#tocorder li h4{
+body.night #reader ul li a,
+body.night #reader ul li:first-of-type,
+body.night .updates ol#tocorder li h4{
   color: #01d6c0;
   border-color: #28374a;
 }
-header.night a{
-  border: 1px solid #28374a;
-}
-.updates.night a{
+body.night .updates a{
   color: #717d8b;
 }
-.text.night{
+body.night .text{
   box-shadow: 0px 0px 6px 1px #17222f;
 }
-.text.night h2{
+body.night .text h2{
   color: #cecece;
 }
-.text.night h3 {
+body.night .text h3 {
   background: #253447;
   border-color: #28374a;
   color: #01d6c0;
 }
-input#textfield.night{
+.night input#textfield{
   border-bottom: 1px solid #364961;
 }
 .night input::placeholder{
   color: #717d8b;
 }
-.updates.night img#cover{
+body.night .updates img#cover{
   border: 7px solid #16212d;
   outline: 5px solid #101821;
 }
 /*hover night mode >*/
-.updates.night a:hover{
+body.night .updates a:hover{
   color: #01d6c0;
 }
-span.numbers.night{
-}
-/* </ hover night mode*/
-
-/*.night li, .night p, .night input[type="text"]{
-  background: #000;
-}
-.night ul li {
-  border-bottom: 1px solid #848484;
-  text-shadow: none;
-}
-.night input[type="text"]{
-  border: 1px solid #848484;
-}
-.updates.night li:first-child {
-  border-top: 1px solid #848484;
-}*/
 /*night mode <end>*/
 
 @media only screen and (max-width: 960px) {
+  #main{border-radius: 0;}
   .text {width: initial;}
 }
 @media only screen and (max-width: 900px) {
@@ -740,7 +727,6 @@ span.numbers.night{
 }
 @media only screen and (max-width: 600px) {
   #switsh ul{padding: 10px 5px 7px;}
-  span#showBar{bottom: 30px}
   input#textfield{width: 180px;}
   img#cover{
     position: absolute; right: 5px;
@@ -756,6 +742,8 @@ span.numbers.night{
 @media only screen and (max-width: 500px) {
   .updates li{padding: 8px 6px;}
   .updates h1{font-size: 1.3em;}
+  #main{margin-top: -43px;}
+  header {padding: 50px 0px 80px;}
   .updates h2{font-size: 1.1em;}
   .updates a h3{font-size: 1em; margin: 2px 0;}
   .updates a span.icones{font-size: .8em; padding-right: 5px;}
@@ -768,7 +756,7 @@ span.numbers.night{
   #reader p{padding: 5px 3px;}
   img#spin, span.icones.icon-close{width: 38px;}
   span.icones.icon-close{line-height: 36px; font-size: 0.9em;}
-  .updates.night img#cover{outline: none; border: 3px solid #101821;}
+  body.night .updates img#cover{outline: none; border: 3px solid #101821;}
 }
 @media only screen and (max-width: 400px){
   .text h2{font-size: 1.1em;}
@@ -778,6 +766,8 @@ span.numbers.night{
 }
 @media only screen and (max-width: 360px){
   .updates h1{font-size: 1.2em;}
+  #main{margin-top: -41px;}
+  header {padding: 50px 0px 76px;}
   .updates h2{font-size: 1em;}
   .updates a h3{font-size: 0.9em; margin: 1px 0;}
   .updates a span.icones{font-size: .8em; padding-right: 5px;}

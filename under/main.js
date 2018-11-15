@@ -1,8 +1,9 @@
 
 function SortChapter(obj){
-  obj.sort(function(a,b){
-    return -(a.chapter.localeCompare(b.chapter));
-  })
+  obj.sort(function(a, b){return b.chapter - a.chapter});
+  // obj.sort(function(a,b){
+  //   return -(a.chapter.localeCompare(b.chapter));
+  // })
 };
 
 function timeSince(date) {
@@ -217,13 +218,18 @@ $.ajax({
         });
 
         read.on('click', function(){
-          $(this).after("<img id='load' src='imgs/spiny.gif'>");
-          url=$(this).siblings('a.icon-external-link').attr('href');
-          ttl=$(this).siblings('a.link').children('h2').text();
-          mom=$(this).parent();
-          redearScroll=$(this).parent().offset().top;
+          var read = $(this);
+          read.hide();
+          read.after("<img id='load' src='imgs/spiny.gif'>");
+          url=read.siblings('a.icon-external-link').attr('href');
+          ttl=read.siblings('a.link').children('h2').text();
+          mom=read.parent();
+          redearScroll=read.parent().offset().top;
           Reader(url,ttl,mom);
           localStorage.setItem("redearScroll",redearScroll);
+          setTimeout(function() {
+            read.show();
+          }, 3000);
         });
 
       }else if(divID=="search_results"){
@@ -250,13 +256,18 @@ $.ajax({
           });
 
           $('#'+divID+" .read").on('click', function(){
-            $(this).after("<img id='load' src='imgs/spiny.gif'>");
-            url=$(this).siblings('a.icon-external-link').attr('href');
-            ttl=$(this).siblings('h2').text();
-            mom=$(this).parent();
-            redearScroll=$(this).parent().offset().top;
+            var searshRead = $(this);
+            searshRead.hide();
+            searshRead.after("<img id='load' src='imgs/spiny.gif'>");
+            url=searshRead.siblings('a.icon-external-link').attr('href');
+            ttl=searshRead.siblings('h2').text();
+            mom=searshRead.parent();
+            redearScroll=searshRead.parent().offset().top;
             Reader(url,ttl,mom);
             localStorage.setItem("redearScroll",redearScroll);
+            setTimeout(function() {
+              searshRead.show();
+            }, 3000);
           });
 
           $('#search_results li a h2').on('click',function(e){
@@ -423,9 +434,12 @@ function toc(momy,query,limit,divID){
           $('#'+divID+' ul').append("<li id='loadnext'><b class='icones icon-plus-square'>Load More</b></li>");
         }
         toc.find('li[data-link]').on('click', function(){
-          $(this).append("<img id='load' src='imgs/spiny.gif'>");
           var mom = $(this),
               url = mom.data('link');
+
+          mom.css("pointer-events", "none");
+          mom.append("<img id='load' src='imgs/spiny.gif'>");
+
           if(divID == 'novelinfo'){
             var ttl = $('#novelinfo ul li:eq(0) h1').text();
             redearScroll = $('li#showtoc').offset().top;
@@ -435,11 +449,19 @@ function toc(momy,query,limit,divID){
           }
           Reader(url,ttl,mom);
           localStorage.setItem("redearScroll",redearScroll);
+          setTimeout(function() {
+            mom.css("pointer-events", "auto");
+          }, 3000);
         });
 
         $("#loadnext").on('click', function(){
+          var loadnext = $(this);
+          loadnext.css("pointer-events", "none");
           $(this).append("<img id='load' src='imgs/spiny.gif'>");
           tocMore(query,10);
+          setTimeout(function() {
+            loadnext.css("pointer-events", "auto");
+          }, 2000);
         });
       }else{
         $(momy).remove();
@@ -589,13 +611,19 @@ function tocMore(query,limit){
           });
         }
         toc.find('li').unbind().on('click', function(){
-        $(this).append("<img id='load' src='imgs/spiny.gif'>");
-        var mom = $(this),
-            url = mom.data('link');
-        var ttl = $('#novelinfo ul li:eq(0) h1').text();
-        redearScroll = $('li#showtoc').offset().top;
-        localStorage.setItem("redearScroll",redearScroll);
-        Reader(url,ttl,mom);
+          var mom = $(this),
+              url = mom.data('link');
+
+          mom.css("pointer-events", "none");
+          mom.append("<img id='load' src='imgs/spiny.gif'>");
+          
+          var ttl = $('#novelinfo ul li:eq(0) h1').text();
+          redearScroll = $('li#showtoc').offset().top;
+          localStorage.setItem("redearScroll",redearScroll);
+          Reader(url,ttl,mom);
+          setTimeout(function() {
+              mom.css("pointer-events", "auto");
+          }, 3000);
         });
       }
     },
@@ -855,3 +883,115 @@ function Reader(url,ttl,mom){
       }     
   });
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+function init(){
+  var updates = 'updates';
+      var url  = 'https://www.reddit.com/r/QidianUnderground/new.json?',
+        limit = 100;
+
+  getData('',url,limit,updates);
+  
+  $('.icon-rotate-cw').on('click', function(){
+    $('img#spin').show();
+    $('#'+updates+ ' ul li:gt(0)').remove()
+    getData('',url,limit,updates);              
+  });
+
+  $('#novelinfo .icon-close, #search_results .icon-close').on('click',function(){
+
+    toHide    = $(this).parents('.updates').attr('id');
+    ittSearch = window.novelInfoittSearch;
+
+    if(toHide == 'search_results'){
+      divToShow = localStorage.getItem('divTohide');
+      $('#'+toHide+' ul li:gt(0)').remove();
+      $('#'+toHide).hide();
+      $('#'+divToShow).show();
+      $('#showsearch ,#search').show();
+    }else if(toHide == 'novelinfo' && ittSearch){
+      $('#'+toHide+' ul li:eq(0) h1').remove();
+      $('#'+toHide+' ul li:gt(0)').remove();
+      window.novelInfoittSearch = false;
+      $('#search_results').show();
+      $('#'+toHide).hide();
+    }
+    else{
+      scroll = localStorage.getItem("scroll");        
+      $('#'+toHide+' ul li:eq(0) h1').remove();
+      $('#'+toHide+' ul li:gt(0)').remove();
+      $('#'+updates).show();
+      $('#'+toHide).hide();
+      $('body,html').animate({scrollTop:scroll},300);
+    }
+
+  });
+  // novelList(link,'60','novellist');
+
+  $('#showsearch').on('click', function(){
+    $('#search').toggle();
+    $(this).toggleClass('icon-close');
+    $('#textfield').val('').css('border-bottom-color','');
+    $('#textfield').focus();
+  });
+  $('#reddit_search').on('click', function(){
+    var textfield    = $('#textfield'),
+      textfieldVal = $(textfield).val().replace(/[^\w'’\s]/gi, '').trim();
+
+    if(textfieldVal && textfieldVal.length>2 && !$.isNumeric(textfieldVal)){
+      textfield.css('border-bottom-color','initial');
+
+      divTohide = $('.updates:visible:eq(0)').attr('id');
+
+      $('#'+divTohide).hide();
+      $('#search_results ul li:gt(0)').remove();
+      $('#search_results, #search_results li:eq(0) img').show();
+      $('#showsearch ,#search').hide();
+      link = "https://www.reddit.com/r/QidianUnderground/search.json?";
+      getData(textfieldVal,link,30,'search_results');
+
+      if(divTohide == 'novelinfo'){
+        $('#'+divTohide+' ul li:eq(0) h1').remove();
+        $('#'+divTohide+' ul li:gt(0)').remove();
+        localStorage.setItem("divTohide",'updates');
+      }
+      else{
+        localStorage.setItem("divTohide",divTohide);
+      }
+
+    }else{
+      textfield.css('border-bottom-color','#ff0a0a');
+      textfield.val('').focus();
+    }
+  });
+
+  $('.icon-moon').on('click', function(){
+    $('body').addClass('night');
+    $(".icon-sun").css('display','inline-block');
+    $(this).hide();
+  });
+  $('.icon-sun').on('click', function(){
+    $('body').removeClass('night');
+    $(".icon-moon").show();
+    $(this).hide();
+  });
+
+  $('#top,#redertop').on('click', function(){
+    $('body,html').animate({scrollTop:0},300);
+  });
+  $(window).on('scroll',function(){
+    $(window).scrollTop()>=400?$('#top,#redertop').css('display','initial'):$('#top,#redertop').hide();
+  });
+
+}
