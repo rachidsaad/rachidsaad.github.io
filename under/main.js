@@ -169,17 +169,17 @@ $.ajax({
             updates.children('ul').append(
               "<li><span class='numbers'>"
               +etr+
-              "</span><span class='bookups icones icon-plus-square'></span><span class='read icones icon-book-open'></span><a href='"
+              "</span><span class='bookups icones icon-plus-square' title='Table Of Contents'></span><span class='read icones icon-book-open' title='Read Chapter'></span><a href='"
               +url+
-              "' class='link'><h2>"
+              "' class='link' title='Novel'><h2>"
               +data.title+
               "</h2></a><a class='icones icon-external-link' href='"
               +data.link+
-              "' target='_blank'><h3>Chapter: "
+              "' target='_blank' title='Original Paste'><h3>Chapter: "
               +data.chapter+
               "</h3></a><p><a href='"
               +data.redditLink+
-              "' class='sublinks' target='_blank'><span class='icones icon-reddit1'>Reddit Thread</span><span class='icones icon-thermometer'>Score: "
+              "' class='sublinks' target='_blank' title='Reddit Thread'><span class='icones icon-reddit1'>Reddit Thread</span><span class='icones icon-thermometer'>Score: "
               +data.score+
               "</span><span class='icones icon-chat_bubble_outline'>Comments: "
               +data.comments+
@@ -222,14 +222,17 @@ $.ajax({
           read.hide();
           read.after("<img id='load' src='imgs/spiny.gif'>");
           url=read.siblings('a.icon-external-link').attr('href');
+
           ttl=read.siblings('a.link').children('h2').text();
           mom=read.parent();
           redearScroll=read.parent().offset().top;
           Reader(url,ttl,mom);
+
           localStorage.setItem("redearScroll",redearScroll);
           setTimeout(function() {
             read.show();
           }, 3000);
+
         });
 
       }else if(divID=="search_results"){
@@ -242,14 +245,14 @@ $.ajax({
             if(bestMatch.indexOf(data.bookComp) === -1){
               bestMatch.push(data.bookComp);
               url = cleanUrl("novel.html?q=", data.title);
-              $('#'+divID+' ul li.bestmatch').append("<a href='"+url+"'><h2 class='icones icon-book1'>"+data.title+"</h2></a>");
+              $('#'+divID+' ul li.bestmatch').append("<a href='"+url+"'><h2 class='icones icon-book1' title='Novel'>"+data.title+"</h2></a>");
             }
           });
 
           $.map(Books,function(data,i){
           if(newA.indexOf(data.bookAndChap) === -1){
             newA.push(data.bookAndChap);
-            $('#'+divID+' ul').append("<li><span class='numbers'>"+etr+"</span><span class='read icones icon-book-open'></span><h2>"+data.title+"</h2><a class='icones icon-external-link' href='"+data.link+"' target='_blank'><h3>Chapter: "+data.chapter+"</h3></a><p id='date'>"+data.date+"</p></li>");
+            $('#'+divID+' ul').append("<li><span class='numbers'>"+etr+"</span><span class='read icones icon-book-open' title='Read Chapter'></span><h2>"+data.title+"</h2><a class='icones icon-external-link' href='"+data.link+"' target='_blank' title='Original Paste'><h3>Chapter: "+data.chapter+"</h3></a><p id='date'>"+data.date+"</p></li>");
             num+=data.score;
             etr++;          
             }
@@ -745,6 +748,8 @@ $.ajax({
 };
 
 function Reader(url,ttl,mom){
+  var txtContents = localStorage.getItem(url)
+if (txtContents===null) {
   $.ajax({
       method: 'GET',
       dataType: 'json',
@@ -763,9 +768,6 @@ function Reader(url,ttl,mom){
             finalText     = "",
             decreptedText = sjcl.decrypt(pass, CryptoText.data),
             readerTxt     = $('#reader .text');
-
-          // clear rudund
-          $('#reader').append("<span class='icones icon-close'></span>");
 
           decreptedText = Base64.btou(RawDeflate.inflate(Base64.fromBase64(decreptedText))).replace(/<\/?\w+[^>]*\/?>/g, "");
           decreptedText = decreptedText.replace(/[<>]/g, '#').replace(/[\\]/g, "");
@@ -823,12 +825,13 @@ function Reader(url,ttl,mom){
                 finalText+="<p>"+line+"</p>";}
               }
           });
-    
+
           readerTxt.append("<h2>"+ttl+"</h2>");
 
           if(menu.length>1){
-
-            readerTxt.append("<span class='icones  icon-th-menu'></span><ul><li><a>Table of Contents:</a></li></ul>");
+            readerTxt.children('h2').before("<span class='icones  icon-th-menu'></span>");
+            readerTxt.append("<ul><li><a>Table of Contents:</a></li></ul>");
+            // readerTxt.append("<span class='icones  icon-th-menu'></span><ul><li><a>Table of Contents:</a></li></ul>");
             $.each(menu, function(i, chap){
               readerTxt.children('ul').append("<li><a href='#to_"+chap.id+"'><h4><span>"+(i+1)+"</span>"+chap.title+"</h4></a></li>");
             });
@@ -836,29 +839,9 @@ function Reader(url,ttl,mom){
 
           readerTxt.append(finalText);
 
-          $('body,html').animate({scrollTop:0},300);
-          $('#reader').show();
-          $('#wrap').hide();
-
-          $('span.icon-th-menu').on('click', function(){
-            $('#reader ul').slideToggle(150);
-          });
-
-          $('#reader a[href]').on('click', function(e){
-            var id = $(this).attr('href');
-            id = $(id);
-            $('body,html').animate({scrollTop:id.offset().top},300);
-            e.preventDefault();
-          });
-          
-          $('#reader .icon-close').on('click', function(){
-            var redearScroll = localStorage.getItem("redearScroll");
-            $('#reader').hide();
-            $('body,html').animate({scrollTop:redearScroll},300);
-            $('#wrap').show();
-            $(this).remove();
-            readerTxt.empty();
-          });
+          var textContents = $('.text').html();
+          localStorage.setItem(url,textContents);
+          readerInitCom();
         }
 
       },
@@ -880,7 +863,47 @@ function Reader(url,ttl,mom){
               }         
               return;
         }
+        else if(status == 'error'){
+          $(mom).children('span.read').remove();
+          $(mom).append("<span class='error'>Error</span>");
+          $(mom).unbind();
+        }
       }     
+  });
+}else{
+  $('.text').html(txtContents);
+  readerInitCom();
+}
+};
+
+function readerInitCom(){
+  $('img#load').remove();
+  var reader = $('#reader'),
+      text   = $('.text');
+  $('body,html').animate({scrollTop:0},300);
+  reader.show();
+  $('#wrap').hide();
+
+  $('span.icon-th-menu').on('click', function(){
+    $('#reader ul').slideToggle(150);
+  });
+
+  $('#reader a[href]').on('click', function(e){
+    var id = $(this).attr('href');
+    id = $(id);
+    $('body,html').animate({scrollTop:id.offset().top},300);
+    e.preventDefault();
+  });
+
+  reader.append("<span class='icones icon-close'></span>");
+
+  $('#reader .icon-close').on('click', function(){
+    var redearScroll = localStorage.getItem("redearScroll");
+    reader.hide();
+    $('body,html').animate({scrollTop:redearScroll},300);
+    $('#wrap').show();
+    $(this).remove();
+    text.empty();
   });
 };
 
@@ -890,13 +913,8 @@ function Reader(url,ttl,mom){
 
 
 
-
-
-
-
-
-
 function init(){
+  
   var updates = 'updates';
       var url  = 'https://www.reddit.com/r/QidianUnderground/new.json?',
         limit = 100;
@@ -960,6 +978,7 @@ function init(){
       $('#showsearch ,#search').hide();
       link = "https://www.reddit.com/r/QidianUnderground/search.json?";
       getData(textfieldVal,link,30,'search_results');
+      $('body,html').animate({scrollTop:0},300);
 
       if(divTohide == 'novelinfo'){
         $('#'+divTohide+' ul li:eq(0) h1').remove();
@@ -976,22 +995,51 @@ function init(){
     }
   });
 
+  $('#textfield').keypress(function(e) {
+    if(e.which == 13) {
+      $('#reddit_search').click();
+    }
+  });
+
   $('.icon-moon').on('click', function(){
     $('body').addClass('night');
     $(".icon-sun").css('display','inline-block');
     $(this).hide();
+    $('header').css("background","url('imgs/bluediamonds.png') 50% 0");
+    localStorage.setItem('nightMode','moon');
   });
+
   $('.icon-sun').on('click', function(){
     $('body').removeClass('night');
     $(".icon-moon").show();
     $(this).hide();
+    $('header').css("background","url('imgs/whitediamond.png') 50% 0");
+    localStorage.setItem('nightMode','sun');
   });
 
-  $('#top,#redertop').on('click', function(){
+  $('#top,#readertop').on('click', function(){
     $('body,html').animate({scrollTop:0},300);
   });
   $(window).on('scroll',function(){
-    $(window).scrollTop()>=400?$('#top,#redertop').css('display','initial'):$('#top,#redertop').hide();
+    $(window).scrollTop()>=400?$('#top,#readertop').css('display','initial'):$('#top,#readertop').hide();
   });
+
+  var nightMode = localStorage.getItem('nightMode');
+  if(nightMode == 'moon'){    
+    $('.icon-moon').click();
+  }
+
+
+
+
+  // fix iphone position fixed on focus
+  // $("#textfield").on("focus", function() {window.scrollBy(0, 1)});
+  // if ('ontouchstart' in window) {
+  //   $(document).on('focus', 'input', function() {
+  //       $('#switsh').css({'position': 'fixed','bottom':'0'});
+  //   }).on('blur', 'input', function() {
+  //       $('#switsh').css('position', '');
+  //   });
+  // }
 
 }

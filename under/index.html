@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Reddit</title>
+	<title>QU | Qidian Underground</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="mobile-web-app-capable" content="yes">
 	<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+
 	<link rel="manifest" href="manifest.json">
 	<link rel="stylesheet" href="style.css">
 
@@ -23,10 +26,16 @@
 	<link href="/imgs/splashscreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
 
 	<script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-	<script src="https://paste.fizi.ca/js/sjcl-1.0.7.js"></script>
+	
+	<script src="https://vim.cx/js/sjcl-1.0.7.js"></script>
+	<script src="https://vim.cx/js/base64-2.4.5.js"></script>
+	<script src="https://vim.cx/js/rawdeflate-0.5.js"></script>
+	<script src="https://vim.cx/js/rawinflate-0.3.js"></script>
+
+	<!-- <script src="https://paste.fizi.ca/js/sjcl-1.0.7.js"></script>
 	<script src="https://paste.fizi.ca/js/base64-2.4.5.js"></script>
 	<script src="https://paste.fizi.ca/js/rawdeflate-0.5.js"></script>
-	<script src="https://paste.fizi.ca/js/rawinflate-0.3.js"></script>
+	<script src="https://paste.fizi.ca/js/rawinflate-0.3.js"></script> -->
 	
 	<!-- <script src="https://paste.imirhil.fr/js/sjcl-1.0.4.js"></script>
 	<script src="https://paste.imirhil.fr/js/base64-2.1.9.js"></script>
@@ -37,13 +46,13 @@
 <body ontouchstart="">
 	<div id="switsh">
 		<ul>
-			<li class='icones icon-moon'></li>
-			<li class='icones icon-sun'></li>
-			<li class='icones icon-chevron-thin-up' id='top'></li>
+			<li class='icones icon-moon' title='Light-OFF'></li>
+			<li class='icones icon-sun' title='Light-ON'></li>
+			<li class='icones icon-chevron-thin-up' id='top' title='TOP'></li>
 			<li class='icones icon-search2' id='showsearch'></li>
 			<span id='search'>
 				<li><input type="text" placeholder="Novel Name" id='textfield'></li>
-				<li class="icones icon-search2" id="reddit_search"></li>
+				<li class="icones icon-search2" id="reddit_search" title='Search'></li>
 			</span>
 		</ul>
 	</div>
@@ -51,9 +60,7 @@
 	<div id="wrap">
 
 		<header>
-			<a href="/">
-				<!-- <img src="img/lmp.png" alt="">
-					<h1>UndeRGrounD</h1> -->
+			<a href="/" title='QU'>
 				<svg version="1.1" id="qu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 112.8 111.4" enable-background="new 0 0 112.8 111.4" xml:space="preserve">
 					<g>
 						<path fill="#01D6C0" d="M58,101c-0.2-0.2-0.3-0.3-0.4-0.3c-0.2,0-0.3,0.1-0.5,0.3l-2.1,2.1c-0.8,0.8-1.8,1.2-3,1.2
@@ -78,7 +85,7 @@
 					</g>
 				</svg>
 			</a>
-			<p>A greedy father has thieves for children</p>
+			<p title='Idiom'>A greedy father has thieves for children</p>
 		</header>
 
 		<div id="main">
@@ -88,7 +95,7 @@
 					<li>
 						<h1>Search results:</h1>
 						<img id="spin" src="imgs/spin.gif" alt="">
-						<span class='icones icon-close'></span>
+						<span class='icones icon-close' title='Close'></span>
 					</li>
 				</ul>
 			</div>
@@ -96,7 +103,7 @@
 			<div id="novelinfo" class="updates">
 				<ul>
 					<li>
-						<span class='icones icon-close'></span>
+						<span class='icones icon-close' title='Close'></span>
 					</li>
 				</ul>
 			</div>
@@ -105,7 +112,7 @@
 				<ul>
 					<li>
 						<h1>
-							<span class='icones icon-rotate-cw' data-action='ReFresh'>
+							<span class='icones icon-rotate-cw' title='ReFresh' >
 							</span>Latest Updates:
 						</h1>
 					</li>
@@ -125,24 +132,30 @@
 
 	<div id="reader">
 		<div class="text"></div>
-		<span class='icones icon-chevron-thin-up' id='redertop'></span>
+		<span class='icones icon-chevron-thin-up' id='readertop'></span>
 	</div>
 
 	<script src="main.js"></script>
 	<script>
 	$(document).ready(function(){
-
+		console.log(window.location.hostname);
 		if(window.navigator.userAgent.indexOf('iPhone') != -1){
 			if(window.navigator.standalone == true){
 				init();
 			} else {
-				$('#updates ul').append('<li><h2>add app to home screen</h2></li>');
+				if(localStorage.getItem("homescreen")===null){
+					$('#updates').append("<div id='homescreen'><p>Add App To Home Screen</p> <b class='icones icon-close'><b></div>");
+				}
+				init();
 			}
 		} else {
 			init();
 		}
 
-			
+		$('b.icon-close').on('click',function(){
+			$(this).parent().remove();
+			localStorage.setItem("homescreen",'closed');
+		});
 			
 		});
 	</script>
