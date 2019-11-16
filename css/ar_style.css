@@ -57,13 +57,13 @@ header ul li{
 	display: inline-block;
 }
 header ul li a{
-	color: #B3B3B3;
+	color: #8e8e8e;
 	-webkit-transition: border-bottom .3s, color .3s;
 	-o-transition: border-bottom .3s, color .3s;
 	transition: border-bottom .3s, color .3s;
 }
 .active{
-	border-bottom: 1px dotted #B3B3B3;
+	border-bottom: 1px dotted #8e8e8e;
 }
 #rs_vcard{
 	width: 100%;
@@ -211,10 +211,6 @@ header ul li a{
 #social_media li:last-of-type{
 	margin-right: 0;
 }
-#email a:after,#social_media li a:after, #website a:after,
-#resume_type li a:after, header ul li a:before{
-	content: '#';
-}
 #resume_type li{
 	margin-bottom: 0;
 }
@@ -258,6 +254,8 @@ header ul li a{
 	width: 90px;
 	height: 90px;
 	border-radius: 90px;
+	-webkit-filter: grayscale(100%);
+  	filter: grayscale(100%);
 	-webkit-transition: opacity .3s, box-shadow .2s;
 	-o-transition: opacity .3s, box-shadow .2s;
 	transition: opacity .3s, box-shadow .2s;
@@ -265,6 +263,8 @@ header ul li a{
 #logo_simple img:hover{
 	opacity: 1;
 	box-shadow: 0px 0px 10px #C0CBD0;
+	-webkit-filter: none;
+  	filter: none;
 }
 footer{
 	margin: auto;
