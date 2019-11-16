@@ -62,6 +62,7 @@ header ul li a{
 	overflow: hidden;
 	border: 1px solid #DFDFDF;
 	text-shadow: 0px 1px #F9F9F9;
+	color: #4e4e4e;
 }
 #info,#about,#skills_and_works{
 	width: 33.33333333333333%;
@@ -73,7 +74,6 @@ header ul li a{
 #about, #skills, #works{
 	padding: 2em 1.5625em;
 	text-align: justify;
-	color: #6e6e6e;
 }
 #skills{
 	width: 58.82352941176471%;
@@ -105,7 +105,10 @@ header ul li a{
 	transition: left .3s;
 	z-index: 1;
 }
-#pic:after,#contact_info li a[data-title]:hover:after,#info h3{
+#pic:after,#info h3{
+	background: #fcfcfc;
+}
+#contact_info li a[data-title]:hover:after{
 	background: #75b4fb;
 	color: #fff;
 	text-shadow: none;
@@ -135,14 +138,14 @@ header ul li a{
 	right: -140px;
 	opacity: 1;
 }
-#info h4{
-	color: #6e6e6e;
-}
-#info h3{
-	padding: 1em;
-	line-height: .9em;
-	letter-spacing: .3em;
-	margin: 1em 0;
+#info h3 {
+    padding: 0.9em;
+    line-height: 1.1em;
+    letter-spacing: 0.1em;
+    margin: 1em 0;
+    border-bottom: 1px solid #efecec;
+    border-top: 1px solid #efecec;
+
 }
 #contact_info{
 	color: #858585;
@@ -265,12 +268,6 @@ footer{
 	margin: auto;
 	text-align: center;
 	position: relative;
-}
-footer p{
-	text-transform: uppercase;
-	letter-spacing: 4px;
-	color: #A5A5A5;
-	text-shadow: 1px 1px 0px #FFF,-1px 0px 0px #FFF;
 }
 footer span{
 	display: inline-block;
