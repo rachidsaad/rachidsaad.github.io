@@ -48,7 +48,7 @@ header ul li{
 	display: inline-block;
 }
 header ul li a{
-	color: #8e8e8e;
+	color: #000;
 	-webkit-transition: border-bottom .3s, color .3s;
 	-o-transition: border-bottom .3s, color .3s;
 	transition: border-bottom .3s, color .3s;
@@ -85,7 +85,6 @@ header ul li a{
 }
 #info{
 	text-align: center;
-	text-transform: uppercase;
 	padding: 2em 0;
 }
 #pic{
@@ -138,6 +137,12 @@ header ul li a{
 	right: -140px;
 	opacity: 1;
 }
+#info h2, #info h3, #email, #downlod_my_resume{
+	text-transform: uppercase;
+}
+#social_media a, #website a{
+	text-transform: capitalize;
+}
 #info h3 {
     padding: 0.9em;
     line-height: 1.1em;
@@ -148,8 +153,7 @@ header ul li a{
 
 }
 #contact_info{
-	color: #858585;
-	font-size: .75em;
+	font-size: .8em;
 }
 #contact_info li{
 	margin-bottom: 3px;
@@ -158,7 +162,7 @@ header ul li a{
 	margin-bottom: 0;
 }
 #contact_info li a{
-	color: #858585;
+	color: #000;
 	position: relative;
 	-webkit-transition: border-bottom .3s, color .3s;
 	-o-transition: border-bottom .3s, color .3s;
@@ -174,18 +178,18 @@ header ul li a{
 }
 #contact_info li a[data-title]:after{
 	content: attr(data-title);
-	z-index: -20;
-	opacity: 0;
-	position: absolute;
-	top: 100%;
-	left: 100%;
-	padding: 5px 10px;
-	white-space: nowrap;
-	font-size: 1em;
-	text-transform: uppercase;
-	font-variant: small-caps;
-	border-radius: 1px 2px 2px;
-	letter-spacing: 1px;
+    z-index: -20;
+    opacity: 0;
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    padding: 4px 7px;
+    white-space: nowrap;
+    font-size: .9em;
+    text-transform: uppercase;
+    font-variant: small-caps;
+    border-radius: 1px 2px 2px;
+    letter-spacing: 1px;
 	-webkit-transition: opacity .5s, background .3s;
 	-o-transition: opacity .5s, background .3s;
 	transition: opacity .5s, background .3s;
@@ -212,10 +216,10 @@ header ul li a{
 	margin-bottom: 0;
 }
 #resume_type .doc a{
-	color: #689bc7;
+	color: #00437d;
 }
 #resume_type .pdf a{
-	color: #c76868;
+	color: #940000;
 }
 #about h4, #skills_and_works h4{
 	text-transform: lowercase;
