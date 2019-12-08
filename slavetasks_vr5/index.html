@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+	<title>Slave Tasks</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<meta name="description" content="Reddit Slave Tasks cli" />
+	<meta name="keywords" content="slave tasks freelance work online under $20 dollar" />
+	<meta name="author" content=" R.Saad" />
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="mobile-web-app-capable" content="yes">
+	<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+	<link rel="icon" href="favicon.png" type="image/x-icon">
+
+	<link rel="stylesheet" href="style.css">
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+</head>
+
+<body>
+	<div id="wrap">
+		<menu>
+			<ul>
+				<li><a href="#tasks">tasks</a></li>
+				<li><a href="#about">about</a></li>
+				<li><a href="#contact">contact</a></li>
+				<li><a href="#offers">offers</a></li>
+				<li><a href="https://www.reddit.com/r/slavelabour/" target="_blank" rel="noreferrer">r/slavelabour</a></li>
+				<li>
+					<a href="https://www.reddit.com/r/slavelabour/submit?selftext=true&title=[TASK]" target="_blank" rel="noreferrer">add task</a>
+				</li>
+				<li><a href="#donate">donate</a></li>
+			</ul>
+		</menu>
+		<nav>
+			<ul>
+				<li id="lightswitch" class="icon-off"></li>
+				<li class="icon-up"></li>
+				<li class="icon-expand-all"></li>
+				<li class="icon-paint">
+					<ol id="pallete">
+						<li data-rgba="3, 169, 244" id="blue"></li>
+						<li data-rgba="224, 224, 224" id="grey"></li>
+						<li data-rgba="255, 193, 7" id="orange"></li>
+						<li data-rgba="233, 30, 99" id="pink"></li>
+						<li data-rgba="205, 220, 57" id="green"></li>
+					</ol>
+				</li>
+			</ul>
+		</nav>
+		<header>
+			<div id="headbg"></div>
+			<a href="#tasks">&#36;T</a>
+			<p>&#36;lave task&#36;</p>
+		</header>
+		<main>
+			<section id="about" class="sec">
+				<h1 class="headline">about</h1>
+				<h3>introduction:</h3>
+				<p>
+					Slave Tasks takes the latest posts from 
+					<a href="https://www.reddit.com/r/slavelabour/" target="_blank" rel="noreferrer">r/slavelabour</a>
+					using the 
+					<a href="https://www.reddit.com/r/slavelabour/" target="_blank" rel="noreferrer">reddit</a>
+					 api, then render them with style, that sums it up (stop reading).
+				</p>
+				<p>
+					Made this just so I have more control over the layout, easy browsing of latest tasks, with colors that will not hurt my eyes, a friendly (I think) user interface (UI / this is nice for SEO).
+				</p>
+				<p>
+				Started this on my own selfish reason, but while making it, I was like, I think there are other slaves out there that are like me struggling with the general layout of 
+				<a href="https://www.reddit.com/r/slavelabour/" target="_blank" rel="noreferrer">r/slavelabour</a>
+				 (custom css | mainly old 
+				<a href="https://www.reddit.com/r/slavelabour/" target="_blank" rel="noreferrer">reddit</a>
+				 , just filter by new and you will see... Links color with a contrast of more than 2.55 on a blurry background...) so I said why not add a few features then share it with others... so here we are.
+				</p>
+				<h3>How do I use it:</h3>
+				<ul>
+					<li>Browse the tasks.</li>
+					<li>
+						Mark if interested (the title of the task lives in your local storage, so even if you close the page, it will still be marked when you come back).
+					</li>
+					<li>Select task.</li>
+					<li>Place a bid.</li>
+					<li>PM the user.</li>
+					<li>Do the usual.</li>
+				</ul>
+				<h3>Icones:</h3>
+				<table>
+					<tr>
+						<th>icone</th>
+						<th>name</th>
+						<th>purpose</th>
+					</tr>
+					<tr>
+						<td class='icon-reload'></td>
+						<td>reload</td>
+						<td>get latest tasks</td>
+					</tr>
+					<tr>
+						<td class="icon-off"></td>
+						<td>off</td>
+						<td>night mode</td>
+					</tr>
+					<tr>
+						<td class="icon-light"></td>
+						<td>on</td>
+						<td>turn on the light</td>
+					</tr>
+					<tr>
+						<td class="icon-up"></td>
+						<td>up</td>
+						<td>back to top</td>
+					</tr>
+					<tr>
+						<td class="icon-expand-all"></td>
+						<td>expand all</td>
+						<td>show all tasks text if any</td>
+					</tr>
+					<tr>
+						<td class="icon-collapse-all"></td>
+						<td>collapse all</td>
+						<td>hide all tasks text</td>
+					</tr>
+					<tr>
+						<td class="icon-paint"></td>
+						<td>theme</td>
+						<td>change color</td>
+					</tr>
+					<tr>
+						<td class="icon-expand"></td>
+						<td>expand</td>
+						<td>show one task text</td>
+					</tr>
+					<tr>
+						<td class="icon-collapse"></td>
+						<td>collapse</td>
+						<td>hide text</td>
+					</tr>
+					<tr>
+						<td class="icon-more"></td>
+						<td>load more</td>
+						<td>load more tasks</td>
+					</tr>
+					<tr>
+						<td class="num">n</td>
+						<td>task number</td>
+						<td>mark task & task number</td>
+					</tr>
+					<tr>
+						<td class="">bid</td>
+						<td>bid</td>
+						<td>place a $bid</td>
+					</tr>
+					<tr>
+						<td class="pm">pm</td>
+						<td>message</td>
+						<td>send a private message</td>
+					</tr>
+				</table>
+			</section>
+			<section id="contact" class="sec">
+				<h1 class="headline">contact</h1>
+				<h3>
+					Reddit: 
+					<a href="https://st.reddit.com/user/xixp/" target="_blank" rel="noreferrer">u/xixp</a>
+				</h3>
+			</section>
+			<section id="donate" class="sec">
+				<h1 class="headline">donate</h1>
+				<h3>Donations are great, but I prefer work.</h3>
+			</section>
+			<section id="tasks" class="sec">
+				<div id="taskswraper">
+					<h1 class="headline"><span class="icon-reload"></span>Latest tasks</h1>	
+				</div>
+				<span id="loadmore" class="icon-more"></span>
+			</section>
+			<section id="offers" class="sec">
+				<h1 class="headline">offers</h1>
+			</section>
+			<section id="error" class="sec">
+				<h1>404</h1>
+				<h2>Are you lost ?</h2>
+				<a href="#tasks">Go back</a>
+			</section>
+		</main>
+	</div>
+	<script src="main.js"></script>
+	<script>
+
+			(function(){init();})();
+
+	</script>
+
+</body>
+
+</html>
