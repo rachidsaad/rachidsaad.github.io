@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<!--ie conditional tags-->
+			<!--[if lte IE 6]><html class="preIE7 preIE8 preIE9"><![endif]-->
+			<!--[if IE 7]><html class="preIE8 preIE9"><![endif]-->
+			<!--[if IE 8]><html class="preIE9"><![endif]-->
+			<!--[if gte IE 9]><!--><html><!--<![endif]-->
+<!--end ie conditional tags-->
+<head>
+<!--enable x-ua compatibility-->
+    <meta charset="UTF-8">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<!--end x-ua compatibility-->
+<!--viewport tag-->
+  	<meta name="viewport" content="width=device-width,initial-scale=1">
+<!--end viewport tag-->
+<!--page title-->
+    <title>SmashBros: Contact</title>
+<!--end title-->
+<!--common tags-->
+  	<meta name="author" content="saint_nack">
+  	<meta name="description" content="homepage skeleton">
+  	<meta name="keywords" content="html, css, skeleton, landing page, home page, index">
+<!--end common tags-->
+<!--link to fvicon-->
+  	<link rel="shortcut icon" href="favicon.png" type="image/vnd.microsoft.icon">
+<!--end link to favicon-->
+<!-- Google font start -->
+	<link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow&display=swap" rel="stylesheet">
+<!-- Google font end -->
+<!-- style start -->
+	<link rel="stylesheet" href="style.css">
+<!-- style end -->
+</head>
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li><a href="supersmashbros.html">home</a></li>
+				<li><a href="news.html">news</a></li>
+				<li><a href="fanart.html">fanart</a></li>
+				<li><a href="videos.html">videos</a></li>
+				<li><a href="events.html">events</a></li>
+				<li><a href="about.html">about</a></li>
+				<li><a href="contact.html">contact</a></li>
+			</ul>
+		</nav>
+		<h1>SSB</h1>
+		<p>The Ultimate Super Smashbros board</p>
+	</header>
+
+	<div id="main">
+	<h1 id="headline">Contact us</h1>
+	<section id="contact">
+		  <form action="#">
+			<label for="fname">First Name</label>
+			<input type="text" id="fname" name="firstname" placeholder="Your name.">
+
+			<label for="lname">Last Name</label>
+			<input type="text" id="lname" name="lastname" placeholder="Your last name.">
+
+			<label for="email">Email</label>
+			<input type="text" id="email" name="email" placeholder="Your Email.">
+
+			<label for="country">Country</label>
+			<select id="country" name="country">
+			  <option value="canada">Canada</option>
+			  <option value="usa">USA</option>
+			</select>
+
+			<label for="Message">Message</label>
+			<textarea id="Message" name="subject" placeholder="Message" style="height:200px"></textarea>
+
+			<input type="submit" value="Submit">
+		</form>
+	</section>
+	</div>
+	<footer>
+		<p>© copyright 2019 saint_nack</p>
+	</footer>
+</body>
+</html>
