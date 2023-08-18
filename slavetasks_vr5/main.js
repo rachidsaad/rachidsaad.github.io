@@ -79,7 +79,7 @@ arrayTasks = (data,taskNum) =>{
 		}
 
 		// convert > markdown
-		text = marked(text);
+		text = marked.parse(text);
 
 		// boss profile
 		var bossProfile = 'https://www.reddit.com/user/'+boss;
