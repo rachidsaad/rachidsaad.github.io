@@ -3602,7 +3602,9 @@ input, select, textarea {
 			#main > .main {
 				padding: 3em 0.25em 1em 0.25em ;
 			}
-
+			.spotlight .content, p.content{
+				padding: 0 1.5em;
+			}
 
 		}
 
