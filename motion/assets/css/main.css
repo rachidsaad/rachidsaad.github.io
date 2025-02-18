@@ -3613,7 +3613,7 @@ input, select, textarea {
 
 		@media screen and (max-width: 480px) {
 
-			#main > .main {
+			#main > .main,  #content.editions{
 				padding: 3em 0.25em 1em 0.25em ;
 			}
 			.spotlight .content, p.content{
