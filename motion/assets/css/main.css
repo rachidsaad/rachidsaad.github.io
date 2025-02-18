@@ -193,6 +193,14 @@ input, select, textarea {
 			text-align: justify;
 		}
 
+		p.center, td.center {
+			text-align: center;
+		}
+
+		p.justify {
+			text-align: justify;
+		}
+
 	h1, h2, h3, h4, h5, h6 {
 		font-weight: 300;
 		line-height: 1.5;
@@ -2623,13 +2631,8 @@ input, select, textarea {
 				padding-right: 0 !important;
 			}
 
-/* Section/Article */
-	
-	section.main {
+	section#content p{
 		text-align: justify;
-	}
-	section.special, article.special {
-		text-align: center;
 	}
 
 	header.major {
@@ -2642,17 +2645,12 @@ input, select, textarea {
 
 			header.major h2:after {
 				display: block;
-				content: '';
-				width: 3.25em;
-				height: 2px;
-				margin: 0.7em 0 1em 0;
-				border-radius: 2px;
+			    content: '';
+			    height: 3px;
+			    border-radius: 2px;
+			    margin-top: 0.3em;
+			    width: 200px;
 			}
-
-				section.special header.major h2:after, article.special header.major h2:after {
-					margin-left: auto;
-					margin-right: auto;
-				}
 
 		header.major p {
 			font-size: 1.25em;
@@ -2700,10 +2698,6 @@ input, select, textarea {
 
 	}
 
-	header.major h2:after {
-		background-color: rgba(255, 255, 255, 0.35);
-	}
-
 /* Table */
 
 	.table-wrapper {
@@ -2711,8 +2705,17 @@ input, select, textarea {
 		overflow-x: hidden;
 	}
 
+	.table-wrapper h3{
+		text-align: center;
+	    background: #f7f7f7;
+	    padding: 0.5em 0;
+	    border-radius: 5px;
+	    border: 1px solid #efefef;
+		
+	}
+
 	table {
-		margin: 0 0 2em 0;
+		margin: 0 0 1em 0;
 		width: 100%;
 	}
 
@@ -2816,6 +2819,7 @@ input, select, textarea {
 		margin: 0 0 3em -2em;
 		padding: 0;
 		list-style: none;
+		text-align: center;
 	}
 
 		.features li {
@@ -2988,6 +2992,10 @@ input, select, textarea {
 		margin: 0 0 2em 0;
 	}
 
+	.spotlight p{
+		text-align: justify;
+	}
+
 		.spotlight .content {
 			-moz-flex: 1;
 			-webkit-flex: 1;
@@ -3045,6 +3053,8 @@ input, select, textarea {
 					-ms-flex: 0 1 auto;
 					flex: 0 1 auto;
 					margin-left: 0;
+				}
+				#intro .spotlight .image {
 					rotate: -90deg;
 				}
 
@@ -3727,3 +3737,22 @@ input, select, textarea {
 			}
 
 		}
+
+/*Accordion*/
+
+	summary {
+		moz-transition: background-color 0.3s ease;
+	    -webkit-transition: background-color 0.3sease;
+	    -ms-transition: background-color 0.3s ease;
+	    transition: background-color 0.3sease;
+		margin: 1em 0;
+	    padding: 1em;
+	    cursor: pointer;
+	    border: 1px solid lightgrey;
+	    border-radius: 9px;
+	    background-color: #dd7582;
+	    color: #fff;
+	}
+	summary:hover {
+		background-color: #935d8c;
+	}
