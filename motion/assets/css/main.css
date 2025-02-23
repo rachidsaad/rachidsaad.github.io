@@ -1860,6 +1860,9 @@ input, select, textarea {
 		text-decoration: none;
 		white-space: nowrap;
 	}
+	ul.justified {
+		justify-content: center;
+	}
 
 		input[type="submit"].icon,
 		input[type="reset"].icon,
@@ -3755,4 +3758,39 @@ input, select, textarea {
 	}
 	summary:hover {
 		background-color: #935d8c;
+	}
+
+	header summary{
+		border: none;
+	    margin: 0 auto 1.6em;
+	    width: 300px;
+	    background: #ffffff;
+	    color: #cd5e6c;
+	    font-weight: bold;
+	}
+	header details ul{
+		display: flex;
+	    justify-content: center;
+	    flex-wrap: wrap;
+		padding: 0;
+	}
+	header details ul li{
+		list-style: none;
+	    margin-bottom: 1em;
+	    width: 22%;
+	    text-align: center;
+	}
+	header details ul li a{
+		border: 1px solid #efefef;
+	    padding: 0.7em 0;
+	    display: block;
+	    border-radius: 0.5em;
+	    font-weight: bold;
+	}
+	header summary:hover {
+		color: #fff;
+	}
+	header details ul li a:hover{
+		background-color: #fff;
+		color: #000;
 	}
