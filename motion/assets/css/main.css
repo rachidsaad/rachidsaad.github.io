@@ -2634,6 +2634,11 @@ ul.icons li:last-child {
 	padding-right: 0 !important;
 }
 
+.icons.leftalign {
+  text-align: center;
+  margin-top: 20px;
+}
+
 section#content p{
 	text-align: justify;
 }
@@ -3820,4 +3825,11 @@ header details ul li a:hover{
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+#inmedia img{
+	border: 1px solid #dd7582;
+	border-radius: 15px;
+}
+#inmedia a{
+	font-weight: bold;
 }
