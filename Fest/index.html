@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Body in Motion | 3rd Edition Festival</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #5d2a1a; /* Earthy Terracotta */
+            --accent: #d4a373;
+            --dark: #1a1a1a;
+            --light: #fdfaf5;
+            --glass: rgba(255, 255, 255, 0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* --- Background Animation --- */
+        .bg-blob {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 163, 115, 0.2) 0%, rgba(253, 250, 245, 0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            filter: blur(50px);
+            transition: all 2s ease-in-out;
+        }
+
+        /* --- Header/Hero --- */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(rgba(253, 250, 245, 0.7), rgba(253, 250, 245, 0.7)), url('bg.png') center/cover no-repeat;
+        }
+
+        .hero-tag {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            line-height: 1.1;
+            margin-bottom: 2rem;
+        }
+
+        .hero-meta {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--primary);
+        }
+
+        /* --- Sections --- */
+        section {
+            padding: 100px 10%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+            margin-top: 10px;
+        }
+
+        /* --- Grid Layouts --- */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--glass);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        /* --- Call for Papers Table --- */
+        .cfp-box {
+            background: var(--dark);
+            color: white;
+            padding: 4rem;
+            border-radius: 30px;
+            margin-top: 4rem;
+        }
+
+        .cfp-info {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .info-item h4 {
+            color: var(--accent);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: #eee;
+            padding: 4rem 10%;
+            text-align: center;
+        }
+
+        .partners {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            opacity: 0.7;
+            margin-top: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            section { padding: 60px 5%; }
+            .cfp-box { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-blob" id="blob"></div>
+
+    <header>
+        <p class="hero-tag">International Traveling Festival • 3rd Edition</p>
+        <h1 class="hero-title">The Mother:<br><em>Body in Motion</em></h1>
+        <p class="hero-meta">
+            <i class="fas fa-calendar-alt"></i> March 26–28, 2026 | 
+            <i class="fas fa-map-marker-alt"></i> Beni Mellal & Afourer, Morocco
+        </p>
+        <a href="#cfp" class="btn btn-primary">Call for Papers</a>
+    </header>
+
+    <section id="about">
+        <div class="content-grid">
+            <div>
+                <h2 class="section-title">The Concept</h2>
+                <p>Dedicated to the figure of the mother, this edition explores movement, transformation, and the crossing of spaces, times, and norms. We view the maternal body as a living, mobile, and political entity.</p>
+                <br>
+                <p>In a context of contemporary change—geographical mobility, transformations in family models, and feminist struggles—the mother's body appears as a space of resistance and reinvention.</p>
+            </div>
+            <div class="card">
+                <h3>The Vision</h3>
+                <p>A space where academic research, artistic creation, and bodily practices converge to rethink motherhood beyond traditional assignments.</p>
+                <br>
+                <ul>
+                    <li>Scientific Presentations</li>
+                    <li>Performances & Dance</li>
+                    <li>Art Installations</li>
+                    <li>Workshops & Round Tables</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="topics" style="background: rgba(212, 163, 115, 0.05);">
+        <h2 class="section-title">Areas of Exploration</h2>
+        <div class="content-grid">
+            <div class="card">
+                <i class="fas fa-dna fa-2x" style="color: var(--accent); margin-bottom: 1rem;"></i>
+                <h3>Transformations</h3>
+                <p>Pregnancy, postpartum, and aging as biological and identity-shifting movements.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-theater-masks fa-2x" style="color: var(--accent); margin-bottom: 1rem;"></i>
+                <h3>Arts & Media</h3>
+                <p>Representations in literature, visual arts, cinema, and contemporary dance.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-fist-raised fa-2x" style="color: var(--accent); margin-bottom: 1rem;"></i>
+                <h3>Resistance</h3>
+                <p>The political body, medicalization, social norms, and feminist critiques.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="cfp">
+        <h2 class="section-title">Call for Contributions</h2>
+        <div class="cfp-box">
+            <p style="margin-bottom: 2rem; font-size: 1.2rem;">We invite researchers and artists to submit their proposals (abstract, format, and bio) before the deadline.</p>
+            <div class="cfp-info">
+                <div class="info-item">
+                    <h4>Deadline</h4>
+                    <p style="font-size: 1.5rem;">February 28, 2026</p>
+                </div>
+                <div class="info-item">
+                    <h4>Languages</h4>
+                    <p style="font-size: 1.5rem;">English, French, Arabic</p>
+                </div>
+                <div class="info-item">
+                    <h4>Director</h4>
+                    <p style="font-size: 1.5rem;">Cherki Karkaba</p>
+                </div>
+            </div>
+            <div style="margin-top: 3rem;">
+                <a href="mailto:festival.lecorps.en.mouvement@gmail.com" class="btn btn-primary" style="background: var(--accent); border-color: var(--accent);">
+                    <i class="fas fa-paper-plane"></i> Submit Proposal
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <h3>Organized by</h3>
+        <div class="partners">
+            <span>Narration & Cultural Forms Lab (USMS)</span>
+            <span>Al Intilaka Association</span>
+            <span>Regional Directorate of Culture</span>
+            <span>DV Association (Marseille)</span>
+        </div>
+        <p style="margin-top: 4rem; font-size: 0.8rem; opacity: 0.5;">© 2026 Le Corps en mouvement. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Interactive background blob that follows mouse movement subtly
+        const blob = document.getElementById('blob');
+        window.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            blob.style.transform = `translate(${x/10}px, ${y/10}px)`;
+        });
+
+        // Simple Fade-in effect on scroll
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = "1";
+                    entry.target.style.transform = "translateY(0)";
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.opacity = "0";
+            card.style.transform = "translateY(30px)";
+            card.style.transition = "all 0.6s ease-out";
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
